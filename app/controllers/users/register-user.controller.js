@@ -11,12 +11,14 @@ const { createUser } = require('../../repositories/users.repository');
 async function registerUser( req = request, res = response ) {
     try {
         const { body } = req;
-        const { name, lastname, email, password } = body;
+        const { name, lastname, email, password, role } = body;
         
         const passwordHash = await bcryptjs.hash( password, 12 );
         const verificationCode = randomstring.generate(64);
 
-        const userDB = { name, lastname, email, passwordHash, verificationCode };
+        let userRole = ( role === 'USER' ) ? 1 : 2;
+
+        const userDB = { name, lastname, email, passwordHash, verificationCode, userRole };
         const userId = await createUser( userDB );
 
         await sendRegisterEmail(name, email, verificationCode);
@@ -29,6 +31,5 @@ async function registerUser( req = request, res = response ) {
         createJsonError( error, res );
     }
 }
-
 
 module.exports = registerUser;

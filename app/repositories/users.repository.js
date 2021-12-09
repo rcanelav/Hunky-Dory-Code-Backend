@@ -9,10 +9,10 @@ async function createUser(user) {
         createdAt
       ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const { name, lastname, email, passwordHash, verificationCode } = user;
+    const { name, lastname, email, passwordHash, verificationCode, userRole } = user;
     const now = new Date();
     const [created] = await pool.query(sql, [
-      name, lastname, email, passwordHash, verificationCode, 1, now
+      name, lastname, email, passwordHash, verificationCode, userRole, now
     ]);
 
     return created.insertId;
@@ -20,7 +20,7 @@ async function createUser(user) {
 
 async function findUserByEmail( email ){
     const pool = await DBconnection();
-    const sql = ' select id, name, email, role, password, verifiedAt from users where email = ?';
+    const sql = ' select id, name, lastname, email, role, password, verifiedAt from users where email = ?';
     const [user] = await pool.query(sql, email);
 
     return user[0];
@@ -39,6 +39,7 @@ async function activateUser(verificationCode) {
 
   return (result.affectedRows === 1);
 }
+
 async function getUserByVerificationCode(code) {
   const pool = await DBconnection();
   const sql = `
@@ -50,11 +51,20 @@ async function getUserByVerificationCode(code) {
   return user[0];
 }
 
+async function findUserById(id) {
+  const pool = await DBconnection();
+  const sql = 'SELECT name, email, image, status, role, password,  createdAt FROM users WHERE id = ?';
+  const [user] = await pool.query(sql, id);
+
+  return user[0];
+}
+
 module.exports = {
     findUserByEmail,
     createUser,
     activateUser,
     getUserByVerificationCode,
+    findUserById,
 
 };
 
