@@ -11,7 +11,7 @@
 
     <div
       id="g_id_onload"
-      data-client_id="1037156839256-i4hj20dunpdkvabrddkmtilfagphk18v.apps.googleusercontent.com"
+      data-client_id="1037156839256-jm81jhdpqldvurcpoftr5a7o35i936jn.apps.googleusercontent.com"
       data-auto_prompt="false"
       data-callback="handleCredentialResponse"
     ></div>
@@ -36,7 +36,7 @@
             // google token
             const body = { id_token: response.credential };
 
-            fetch('http://localhost:8080/api/auth/google', {
+            fetch('http://localhost:3000/api/v1/auth/google', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +49,7 @@
                 localStorage.setItem( 'email', resp.usuario.correo );
               })
               .catch( console.warn );
-          //  console.log('id_token', response.credential);
+           console.log('id_token', response.credential);
       
         }
 

@@ -18,6 +18,23 @@ async function createUser(user) {
     return created.insertId;
 }
 
+async function createUserByGoogleAuth(user) {
+  const pool = await DBconnection();
+    const sql = `
+      INSERT INTO users(
+        name, lastname, email, password, verificationCode, role,
+        createdAt, google, image
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
+    `;
+    const { name, lastname, email, passwordHash, verificationCode, userRole, image } = user;
+    const now = new Date();
+    const [created] = await pool.query(sql, [
+      name, lastname, email, passwordHash, verificationCode, userRole, now, image
+    ]);
+
+    return created.insertId;
+}
+
 async function findUserByEmail( email ){
     const pool = await DBconnection();
     const sql = ' select id, name, lastname, email, role, password, verifiedAt from users where email = ?';
@@ -65,6 +82,7 @@ module.exports = {
     activateUser,
     getUserByVerificationCode,
     findUserById,
+    createUserByGoogleAuth,
 
 };
 
