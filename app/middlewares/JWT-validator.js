@@ -18,15 +18,23 @@ const validateJWT = async ( req, res = response, next ) => {
         const { headers } = req;
         const token = extractAccessToken( headers );
         
-        const { id, name, lastname, role } = jwt.verify( token, process.env.JWT_SECRET );
+        const { id, name, lastname, role, iat } = jwt.verify( token, process.env.JWT_SECRET );
 
         const user = await findUserById( id );
         if( !user ) {
             throwJsonError( 404, 'Invalid token - ID' );
         }
-        if( user.status !== 'ACTIVE' ) {
-            throwJsonError( 403, 'Invalid token - inactive user' );
+        if( !user.verifiedAt ) {
+            throwJsonError( 403, 'Invalid token - Changes need to be confirmed (email)' );
         }
+        
+        const date = user.lastAuthUpdate;
+        const lastAuth = new Date(date);
+        const tokenEmissionDate = new Date( iat * 1000 );
+        if( tokenEmissionDate < lastAuth ) {
+            throwJsonError( 403, 'Invalid token - Token expired' );
+        }
+        
         req.auth = { id, name, lastname, role};
         next();
     } catch (error) {

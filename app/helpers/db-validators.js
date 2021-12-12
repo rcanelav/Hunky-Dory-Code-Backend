@@ -15,7 +15,18 @@ const isExistingUserById = async( id ) => {
     }
 };
 
+const isUserActive = async ( email ) => {
+    const user = await findUserByEmail( email );
+    if ( !user ){
+        throwJsonError( 400, `User does not exist.` );
+    }
+    if ( !user.verifiedAt ){
+        throwJsonError( 400, `User with email: ${ email } is not active.` );
+    }
+};
+
 module.exports = {
     isExistingEmail,
     isExistingUserById,
+    isUserActive,
 };

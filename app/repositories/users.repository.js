@@ -37,7 +37,7 @@ async function createUserByGoogleAuth(user) {
 
 async function findUserByEmail( email ){
     const pool = await DBconnection();
-    const sql = ' select id, name, lastname, email, role, password, verifiedAt from users where email = ?';
+    const sql = 'select id, name, lastname, email, role, password, verifiedAt from users where email = ?';
     const [user] = await pool.query(sql, email);
 
     return user[0];
@@ -48,7 +48,7 @@ async function activateUser(verificationCode) {
   const pool = await DBconnection();
   const sql = `
     UPDATE users
-    SET verifiedAt = ?, status = 'ACTIVE'
+    SET verifiedAt = ?
     WHERE verificationCode = ?
     AND verifiedAt IS NULL
   `;
@@ -70,7 +70,7 @@ async function getUserByVerificationCode(code) {
 
 async function findUserById(id) {
   const pool = await DBconnection();
-  const sql = 'SELECT name, email, image, status, role, password,  createdAt FROM users WHERE id = ?';
+  const sql = 'SELECT name, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate FROM users WHERE id = ?';
   const [user] = await pool.query(sql, id);
 
   return user[0];
@@ -99,6 +99,23 @@ async function updateVerificationCode(id, verificationCode){
   return true;
 }
 
+async function setLastAuthUpdate( id ){
+  const pool = await DBconnection();
+  const now = new Date();
+  const sql = `
+    UPDATE users set lastAuthUpdate = ? where id = ?`;
+  const [users] = await pool.query(sql, [now, id]);
+  return true;
+}
+
+async function getLastUpdate( id ){
+  const pool = await DBconnection();
+  const sql = `
+    SELECT lastAuthUpdate FROM users where id = ?`;
+  const [users] = await pool.query(sql, id);
+  return users[0].lastAuthUpdate;
+}
+
 module.exports = {
     findUserByEmail,
     createUser,
@@ -108,6 +125,7 @@ module.exports = {
     createUserByGoogleAuth,
     updateUser,
     updateVerificationCode,
-
+    setLastAuthUpdate,
+    getLastUpdate,
 };
 

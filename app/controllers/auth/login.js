@@ -7,7 +7,7 @@ const throwJsonError = require("../../errors/throw-json-error");
 const generateJWT = require("../../helpers/generateJWT");
 const { googleVerify } = require("../../helpers/google-verifier");
 const { sendRegisterEmail } = require("../../helpers/mail-smpt");
-const { findUserByEmail, createUserByGoogleAuth, findUserById } = require("../../repositories/users.repository");
+const { findUserByEmail, createUserByGoogleAuth, findUserById, setLastAuthUpdate } = require("../../repositories/users.repository");
 
 
 const login = async ( req, res ) => {
@@ -18,29 +18,20 @@ const login = async ( req, res ) => {
         if( !user ) {
             throwJsonError( 403, 'Invalid user/password - email');
         }
-        if( user.status === 'INACTIVE'){
-            throwJsonError( 403, 'User is inactive. Please contact the administrator');
-        }
 
-        const validPassword = bcryptjs.compare( password, user.password );
+        const validPassword = bcryptjs.compareSync( password, user.password );
         if ( !validPassword ) {
             throwJsonError( 403, 'Invalid user/password - password');
         }
-        
         const token = await generateJWT( user );
         const response = {
             accessToken: token,
-            // user : {
-            //     id,
-            //     name,
-            //     lastname,
-            //     email,
-            //     role,
-            // },
         };
 
+        setLastAuthUpdate( user.id );
+
         res.status( 200 ).json( {
-            response
+            response,
         } );
     } catch ( error ) {
         createJsonError( error, res );
@@ -54,7 +45,6 @@ const googleSignIn = async ( req, res ) => {
 
         let user = await findUserByEmail( email );
         if( !user ) {
-            
             const passwordHash = await bcryptjs.hash( randomstring.generate(8), 12 );
             const firstname = name.split(' ')[0];
             const lastname = name.split(' ')[1];
@@ -74,6 +64,7 @@ const googleSignIn = async ( req, res ) => {
         }
 
         const token = await generateJWT( user );
+        setLastAuthUpdate( user.id );
         
         res.status(201).json( {
             token,
