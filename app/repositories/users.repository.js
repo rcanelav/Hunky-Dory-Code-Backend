@@ -76,6 +76,29 @@ async function findUserById(id) {
   return user[0];
 }
 
+async function updateUser( user ){
+  const { id, name, lastname, email, password } = user;
+  const now = new Date();
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE users
+    SET name = ?, lastname = ?, email = ?, password = ?, updatedAt = ?
+    WHERE id = ?
+  `;
+  await pool.query(sql, [name, lastname, email, password, now, id]);
+
+  return true;
+}
+
+async function updateVerificationCode(id, verificationCode){
+  const pool = await DBconnection();
+  const now = new Date();
+  const sql = `
+    UPDATE users set verificationCode = ?, updatedAt = ?, verifiedAt = NULL where id = ?`;
+  const [users] = await pool.query(sql, [verificationCode, now, id]);
+  return true;
+}
+
 module.exports = {
     findUserByEmail,
     createUser,
@@ -83,6 +106,8 @@ module.exports = {
     getUserByVerificationCode,
     findUserById,
     createUserByGoogleAuth,
+    updateUser,
+    updateVerificationCode,
 
 };
 

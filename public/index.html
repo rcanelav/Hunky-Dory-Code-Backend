@@ -46,10 +46,10 @@
               .then( resp => resp.json() )
               .then( resp => {
                 console.log(resp);
-                localStorage.setItem( 'email', resp.usuario.correo );
+                localStorage.setItem( 'email', resp.email);
               })
               .catch( console.warn );
-           console.log('id_token', response.credential);
+          //  console.log('id_token', response.credential);
       
         }
 

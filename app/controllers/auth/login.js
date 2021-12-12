@@ -70,15 +70,15 @@ const googleSignIn = async ( req, res ) => {
                 google: true,
             };
             const userId = await createUserByGoogleAuth( userDB );
-            console.log(userId)
             user = await findUserById( userId );
             await sendRegisterEmail(name, email, verificationCode);
         }
 
         const token = await generateJWT( user );
-
+        
         res.status(201).json( {
             token,
+            email,
         } );
 
     } catch (error) {

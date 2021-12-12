@@ -1,12 +1,20 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
+const { getUserProfile } = require('../controllers/users/get-user-profile.controller');
+const { getUsers } = require('../controllers/users/get-users.controller');
 const registerUser = require('../controllers/users/register-user.controller');
+const updateUserById = require('../controllers/users/update-user.controller');
 const validateUserActivation = require('../controllers/users/user-activation.controller');
-const { isExistingEmail } = require('../helpers/db-validators');
+const validateUserUpdates = require('../controllers/users/user-changes-validation');
+const { isExistingEmail, isExistingUserById } = require('../helpers/db-validators');
 const { fieldValidator } = require('../middlewares/field-validator');
+const { validateJWT } = require('../middlewares/JWT-validator');
+const isPasswordMatching = require('../middlewares/password-validator');
 
 const router = Router();
 
+
+// Public endpoints
 router.post( '/', [
     check('name', 'The name is required.').not().isEmpty(),
     check('lastname', 'The lastname is required.').not().isEmpty(),
@@ -19,6 +27,28 @@ router.post( '/', [
 ], registerUser );
 
 router.get( '/activation', validateUserActivation );
+
+router.get( '/confirmation', validateUserUpdates );
+
+router.get( '/:id',  getUserProfile );
+
+
+// Private endpoints
+
+router.get( '/',  getUsers );
+
+router.put( '/:id', [
+    validateJWT,
+    check('id', 'Invalid id.').custom( isExistingUserById ),
+    check('name', 'Insert a valid name').not().isEmpty(),
+    check('lastname', 'Insert a valid lastname').isAlpha().not().isEmpty(),
+    check('email', 'Invalid email.').isEmail(),
+    check('image', 'Invalid image.').optional(),
+    check('password', 'The password is required. At least 6 characters as minimum and 12 characters as maximum.').isLength({ min: 6, max: 12 }).optional(),
+    check('repeatPassword', 'The repeat password is required.').custom( isPasswordMatching ), 
+    fieldValidator
+], updateUserById );
+
 
 
 module.exports = router;

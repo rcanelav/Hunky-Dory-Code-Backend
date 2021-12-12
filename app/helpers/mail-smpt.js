@@ -31,6 +31,20 @@ async function sendRegisterEmail( name, email, code ) {
   return data;
 }
 
+async function sendUpdateConfirmationEmail( name, email, code ) {
+  const activationLink = `http://localhost:3000/api/v1/users/confirmation?code=${ code }`;
+  const mailData = {
+    from: SMTP_USER,
+    to: email,
+    subject: '[HDC] Confirm your email at Hunky Dory Code.',
+    text: `Hi ${ name }, we saw that you update your email recently, confirm your changes here: ${ activationLink }`,
+    html: `Hi ${ name }, we saw that you update your email recently, confirm changes here <a href='${ activationLink }'>active it here</a>`,
+  };
+
+  const data = await transporter.sendMail( mailData );
+  return data;
+}
+
 async function sendSuccessfulActivationEmail( name, email ) {
     const mailData = {
       from: SMTP_USER,
@@ -43,9 +57,25 @@ async function sendSuccessfulActivationEmail( name, email ) {
     const data = await transporter.sendMail( mailData );
     return data;
 }
+async function sendSuccessfulUpdateEmail( name, email ) {
+    const mailData = {
+      from: SMTP_USER,
+      to: email,
+      subject: '[HDC] - Your changes were successfully saved!',
+      text: `Hi ${ name },\n thank you for your confirmation, your changes has been successfully saved.
+      Hunky Dory Code`,
+      html: `<h1>Hi ${ name },</h1> thank you for your confirmation, your changes has been successfully saved.
+      <h1>Hunky Dory Code</h1>`,
+    };
+  
+    const data = await transporter.sendMail( mailData );
+    return data;
+}
 
 module.exports = {
     sendRegisterEmail,
     sendSuccessfulActivationEmail,
+    sendUpdateConfirmationEmail,
+    sendSuccessfulUpdateEmail,
 
 };
