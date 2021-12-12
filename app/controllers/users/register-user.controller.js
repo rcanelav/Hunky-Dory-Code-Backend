@@ -16,11 +16,9 @@ async function registerUser( req = request, res = response ) {
         const passwordHash = await bcryptjs.hash( password, 12 );
         const verificationCode = randomstring.generate(64);
 
-        let userRole = ( role === 'USER' ) ? 1 : 2;
-
-        const userDB = { name, lastname, email, passwordHash, verificationCode, userRole };
+        const userDB = { name, lastname, email, passwordHash, verificationCode, role };
         const userId = await createUser( userDB );
-
+        
         await sendRegisterEmail(name, email, verificationCode);
 
         res.status(201).json({

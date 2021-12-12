@@ -22,7 +22,7 @@ router.post( '/', [
     check('email', 'Invalid email.').isEmail(),
     check('email').custom( isExistingEmail ),
     check('role', 'The role is required.').not().isEmpty(),
-    check('role', 'Invalid role.').isIn(['USER', 'EXPERT']),
+    check('role', 'Invalid role.').isIn(['STUDENT', 'EXPERT']),
     fieldValidator
 ], registerUser );
 

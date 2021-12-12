@@ -9,10 +9,10 @@ async function createUser(user) {
         createdAt
       ) VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const { name, lastname, email, passwordHash, verificationCode, userRole } = user;
+    const { name, lastname, email, passwordHash, verificationCode, role } = user;
     const now = new Date();
     const [created] = await pool.query(sql, [
-      name, lastname, email, passwordHash, verificationCode, userRole, now
+      name, lastname, email, passwordHash, verificationCode, role, now
     ]);
 
     return created.insertId;
@@ -22,14 +22,14 @@ async function createUserByGoogleAuth(user) {
   const pool = await DBconnection();
     const sql = `
       INSERT INTO users(
-        name, lastname, email, password, verificationCode, role,
+        name, lastname, email, password, verificationCode,
         createdAt, google, image
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, 1, ?)
     `;
-    const { name, lastname, email, passwordHash, verificationCode, userRole, image } = user;
+    const { name, lastname, email, passwordHash, verificationCode, image } = user;
     const now = new Date();
     const [created] = await pool.query(sql, [
-      name, lastname, email, passwordHash, verificationCode, userRole, now, image
+      name, lastname, email, passwordHash, verificationCode, now, image
     ]);
 
     return created.insertId;
