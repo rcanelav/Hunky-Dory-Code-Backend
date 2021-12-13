@@ -5,63 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google sign in</title>
+    
   </head>
   <body>
     <h1>google sign in</h1>
 
-    <div
-      id="g_id_onload"
-      data-client_id="1037156839256-jm81jhdpqldvurcpoftr5a7o35i936jn.apps.googleusercontent.com"
-      data-auto_prompt="false"
-      data-callback="handleCredentialResponse"
-    ></div>
-    <div
-      class="g_id_signin"
-      data-type="standard"
-      data-size="large"
-      data-theme="outline"
-      data-text="sign_in_with"
-      data-shape="rectangular"
-      data-logo_alignment="left"
-    ></div>
+   
 
 
-    <button id=google_signout>
-      Sign out
+    <button id=google_signout onclick="" >
+      Sign in
     </button>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./auth.js"></script>
     <script>
-        function handleCredentialResponse(response) {
-            // google token
-            const body = { id_token: response.credential };
+      import { startSocialAuth } from './auth.js';
+      function handleLogin ( ){ 
 
-            fetch('http://localhost:3000/api/v1/auth/google', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(body)
-            })
-              .then( resp => resp.json() )
-              .then( resp => {
-                console.log(resp);
-                localStorage.setItem( 'email', resp.email);
-              })
-              .catch( console.warn );
-          //  console.log('id_token', response.credential);
-      
-        }
+        startSocialAuth( 'asd' ) };
+    </script>
+   
 
-        const button = document.querySelector('#google_signout');
-        button.onclick = () => {
-          console.log(google.accounts.id)
-          google.accounts.id.disableAutoSelect();
-          google.accounts.id.revoke( localStorage.getItem('email'), done => {
-            localStorage.clear();
-            location.reload();
-          } );
-        }
-      </script>
+    
   </body>
 </html>

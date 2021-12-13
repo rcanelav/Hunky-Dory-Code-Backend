@@ -24,5 +24,8 @@
     "nodemailer": "^6.7.2",
     "randomstring": "^1.2.1",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "firebase": "^9.6.1"
   }
 }
