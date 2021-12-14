@@ -67,6 +67,7 @@ const googleSignIn = async ( req, res ) => {
         setLastAuthUpdate( user.id );
         res.status(201).json( {
             token,
+            email,
         } );
 
     } catch (error) {

@@ -1,6 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+//THIS FILE BELONGS TO FRONTEND
+
+
+// ######################   INSERT FIREBASE CONFIG HERE   ######################
 initializeApp({
     apiKey: "AIzaSyDRt1qJLMjP9b-JhvqZtad5kLHHgy_56aM",
     authDomain: "hunkydorycode.firebaseapp.com",
@@ -10,33 +14,52 @@ initializeApp({
     appId: "1:464041784745:web:12fff7c6c103a38e1cc0b8",
     measurementId: "G-ZQQFQDBWY4"
 });
+//  ######################   END FIREBASE CONFIG   #############################
 
-    // Initialize Firebase Auth
-const googleAuthProvider = new GoogleAuthProvider();
+
+// Initialize Firebase Auth
 const auth = getAuth();
     
-let googleSingInButton = document.querySelector('#googleSingInButton');
-
-googleSingInButton.addEventListener('click', async(e) => {
-    e.preventDefault();
-    const { _tokenResponse: credentials } = await signInWithPopup(auth, googleAuthProvider);
-    // console.log(credentials);
-    signIn( credentials );
+let signInButtons = document.querySelector('button');
+signInButtons.addEventListener('click', ({target}) => {
+    const { id } = target;
+    switch (id) {
+        case 'googleSignInButton':
+            startSignIn( new GoogleAuthProvider(), 'google' );
+            break;
+    
+        default:
+            break;
+    }
 });
 
-const signIn = ( credentials ) => {
-    const body = { id_token: credentials.idToken }
-    fetch('http://localhost:3000/api/v1/auth/google', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-    .then( resp => resp.json() )
-    .then( resp => {
-        console.log( resp );
-        localStorage.setItem( 'email', resp.email);
-    })
-    .catch( console.warn );
+const startSignIn = async( provider, endpoint ) => {
+    try {
+        const { _tokenResponse: credentials } = await signInWithPopup(auth, provider);
+        signIn( credentials, endpoint );
+    } catch (error) {
+        console.warn(error);
+    }
+};
+
+const signIn = async( credentials, endpoint ) => {
+    try {
+        const body = { id_token: credentials.idToken };
+        const resp = await fetch(`http://localhost:3000/api/v1/auth/${ endpoint }`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+        const { token, email } = await resp.json();
+        localStorage.setItem( 'email', email);
+
+        console.log({ 
+            token,
+            email,
+        });
+    } catch (error) {
+        console.warn(error);
+    }
 };
