@@ -5,7 +5,6 @@ const randomstring = require("randomstring");
 const createJsonError = require("../../errors/create-json-error");
 const throwJsonError = require("../../errors/throw-json-error");
 const generateJWT = require("../../helpers/generateJWT");
-const { googleVerify } = require("../../helpers/google-verifier");
 const { rrssAuthVerify } = require("../../helpers/rrssAuth-verifier");
 const { sendRegisterEmail } = require("../../helpers/mail-smpt");
 const { findUserByEmail, createUserByGoogleAuth, findUserById, setLastAuthUpdate } = require("../../repositories/users.repository");
@@ -43,7 +42,6 @@ const googleSignIn = async ( req, res ) => {
     try {
         const { id_token } = req.body;
         const { name, email, image } = await rrssAuthVerify( id_token );
-        // const { name, email, image } = await googleVerify( id_token );
 
         let user = await findUserByEmail( email );
         if( !user ) {
@@ -68,7 +66,7 @@ const googleSignIn = async ( req, res ) => {
         const token = await generateJWT( user );
         setLastAuthUpdate( user.id );
         res.status(201).json( {
-            id_token
+            token,
         } );
 
     } catch (error) {
