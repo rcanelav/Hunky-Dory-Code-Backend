@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-validator": "^6.13.0",
+    "firebase-admin": "^10.0.0",
     "google-auth-library": "^7.10.3",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
