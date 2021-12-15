@@ -24,6 +24,14 @@ async function createUser(user) {
   return created.insertId;
 }
 
+async function findUsers(){
+  const pool = await DBconnection();
+  const sql = `
+    SELECT id, name, lastname, email, role, image, technologies, createdAt, verifiedAt FROM users`;
+  const [users] = await pool.query(sql);
+  return users;
+}
+
 async function createUserByFirebaseAuth(user) {
   const pool = await DBconnection();
   const sql = `
@@ -141,4 +149,5 @@ module.exports = {
   updateVerificationCode,
   setLastAuthUpdate,
   getLastUpdate,
+  findUsers,
 };

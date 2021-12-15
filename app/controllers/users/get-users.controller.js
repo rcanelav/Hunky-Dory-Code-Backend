@@ -2,24 +2,20 @@
 
 const { response } = require("express");
 const createJsonError = require("../../errors/create-json-error");
+const { findUsers } = require("../../repositories/users.repository");
 
-
-const getUsers = (req, res = response) => {
+const getUsers = async(req, res = response) => {
 
     try {
-        // const { role } = req.auth;
+        const users = await findUsers();
 
         res.status( 200 ).json({
-            msg: 'get users',
-        })
-        
+            users,
+        });
     } catch (error) {
         createJsonError( res, error );
     }
-
-    
 };
-
 
 module.exports = {
     getUsers,
