@@ -25,7 +25,7 @@ signInButtons.addEventListener('click', ({target}) => {
     const { id } = target;
     switch (id) {
         case 'googleSignInButton':
-            startSignIn( new GoogleAuthProvider(), 'google' );
+            startSignIn( new GoogleAuthProvider() );
             break;
     
         default:
@@ -33,19 +33,19 @@ signInButtons.addEventListener('click', ({target}) => {
     }
 });
 
-const startSignIn = async( provider, endpoint ) => {
+const startSignIn = async( provider ) => {
     try {
         const { _tokenResponse: credentials } = await signInWithPopup(auth, provider);
-        signIn( credentials, endpoint );
+        signIn( credentials );
     } catch (error) {
         console.warn(error);
     }
 };
 
-const signIn = async( credentials, endpoint ) => {
+const signIn = async( credentials ) => {
     try {
         const body = { id_token: credentials.idToken };
-        const resp = await fetch(`http://localhost:3000/api/v1/auth/${ endpoint }`, {
+        const resp = await fetch('http://localhost:3000/api/v1/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

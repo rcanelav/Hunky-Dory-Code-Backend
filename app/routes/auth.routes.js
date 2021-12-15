@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { login, googleSignIn } = require('../controllers/auth/login');
-const { isUserActive, isExistingEmail } = require('../helpers/db-validators');
+const { login, firebaseAuth } = require('../controllers/auth/login');
+const { isUserActive } = require('../helpers/db-validators');
 const { fieldValidator } = require('../middlewares/field-validator');
 
 const router = Router();
@@ -13,10 +13,10 @@ router.post('/login', [
     fieldValidator
 ], login );
 
-router.post('/google', [
+router.post('/', [
     check('id_token', 'Google token is required.').not().isEmpty(),
     fieldValidator
-], googleSignIn );
+], firebaseAuth );
 
 
 module.exports = router;

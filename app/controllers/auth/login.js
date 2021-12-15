@@ -38,7 +38,7 @@ const login = async ( req, res ) => {
     }
 };
 
-const googleSignIn = async ( req, res ) => {
+const firebaseAuth = async ( req, res ) => {
     try {
         const { id_token } = req.body;
         const { name, email, image } = await rrssAuthVerify( id_token );
@@ -77,5 +77,5 @@ const googleSignIn = async ( req, res ) => {
 
 module.exports = {
     login,
-    googleSignIn,
+    firebaseAuth,
 };
