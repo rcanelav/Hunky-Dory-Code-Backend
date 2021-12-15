@@ -10,6 +10,7 @@ const { isExistingEmail, isExistingUserById } = require('../helpers/db-validator
 const { fieldValidator } = require('../middlewares/field-validator');
 const { validateJWT } = require('../middlewares/JWT-validator');
 const isPasswordMatching = require('../middlewares/password-validator');
+const { isAdminRole, isValidRole } = require('../middlewares/role-validator');
 
 const router = Router();
 
@@ -35,7 +36,11 @@ router.get( '/:id',  getUserProfile );
 
 // Private endpoints
 
-router.get( '/',  getUsers );
+router.get( '/', [
+    validateJWT,
+    isAdminRole,
+    fieldValidator
+],  getUsers );
 
 router.put( '/:id', [
     validateJWT,

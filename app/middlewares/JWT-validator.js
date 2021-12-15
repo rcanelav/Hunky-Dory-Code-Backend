@@ -17,6 +17,10 @@ const validateJWT = async ( req, res = response, next ) => {
     try {
         const { headers } = req;
         const token = extractAccessToken( headers );
+
+        if( !token ){
+            throwJsonError( 403, 'Authorization (token) required.' );
+        }
         
         const { id, name, lastname, role, iat } = jwt.verify( token, process.env.JWT_SECRET );
 
