@@ -29,4 +29,4 @@ async function validateUserActivation( req, res = response){
     }
 }
 
-module.exports = validateUserActivation;
+module.exports = {validateUserActivation};

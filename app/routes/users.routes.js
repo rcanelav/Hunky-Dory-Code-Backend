@@ -1,20 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUserProfile } = require('../controllers/users/get-user-profile.controller');
-const { getUsers } = require('../controllers/users/get-users.controller');
-const registerUser = require('../controllers/users/register-user.controller');
-const { updateUserImage } = require('../controllers/users/update-user-image');
-const updateUserById = require('../controllers/users/update-user.controller');
-const validateUserActivation = require('../controllers/users/user-activation.controller');
-const validateUserUpdates = require('../controllers/users/user-changes-validation');
+const { getUserProfile, getUsers, registerUser, updateUserImage, updateUserById, validateUserActivation, validateUserUpdates } = require('../controllers/users/index.controller');
 const { isExistingEmail, isExistingUserById } = require('../helpers/db-validators');
-const { fieldValidator } = require('../middlewares/field-validator');
-const { fileExtensionValidator } = require('../middlewares/file-extension-validator');
-const { userRequestValidator } = require('../middlewares/user-request-validator');
-const { validateJWT } = require('../middlewares/JWT-validator');
-const isPasswordMatching = require('../middlewares/password-validator');
-const { isAdminRole, isValidRole } = require('../middlewares/role-validator');
-
+const { fieldValidator, fileExtensionValidator, validateJWT, isPasswordMatching, userRequestValidator, isAdminRole } = require('../middlewares/index.middlewares');
 const router = Router();
 
 
@@ -48,6 +36,7 @@ router.get( '/', [
 router.put( '/:id', [
     validateJWT,
     check('id', 'Invalid id.').custom( isExistingUserById ),
+    userRequestValidator,
     check('name', 'Insert a valid name').not().isEmpty(),
     check('lastname', 'Insert a valid lastname').isAlpha().not().isEmpty(),
     check('email', 'Invalid email.').isEmail(),

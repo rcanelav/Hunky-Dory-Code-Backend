@@ -26,7 +26,7 @@ async function sendRegisterEmail( name, email, code ) {
     text: `Hi ${ name }, to confirm the account go this link: ${ activationLink }`,
     html: `Hi ${ name }, to confirm the account <a href='${ activationLink }'>active it here</a>`,
   };
-
+  console.log('email')
   const data = await transporter.sendMail( mailData );
   return data;
 }

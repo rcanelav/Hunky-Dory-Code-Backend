@@ -46,4 +46,4 @@ const updateUserById = async( req, res = response) => {
    }
 };
 
-module.exports = updateUserById;
+module.exports = {updateUserById};
