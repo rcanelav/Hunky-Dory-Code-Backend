@@ -18,9 +18,8 @@ async function registerUser( req = request, res = response ) {
 
         const userDB = { name, lastname, email, passwordHash, verificationCode, role };
         const userId = await createUser( userDB );
-        
         await sendRegisterEmail(name, email, verificationCode);
-
+        
         res.status(201).json({
             id: userId,
             msg: 'User created successfully'
@@ -30,4 +29,4 @@ async function registerUser( req = request, res = response ) {
     }
 }
 
-module.exports = registerUser;
+module.exports = {registerUser};

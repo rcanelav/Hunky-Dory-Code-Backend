@@ -3,7 +3,7 @@
 const { response } = require("express");
 const createJsonError = require("../../errors/create-json-error");
 const throwJsonError = require("../../errors/throw-json-error");
-const { sendSuccessfulActivationEmail, sendSuccessfulUpdateEmail } = require("../../helpers/mail-smpt");
+const { sendSuccessfulUpdateEmail } = require("../../helpers/mail-smpt");
 const { activateUser, getUserByVerificationCode } = require("../../repositories/users.repository");
 
 async function validateUserUpdates( req, res = response){
@@ -29,4 +29,4 @@ async function validateUserUpdates( req, res = response){
     }
 }
 
-module.exports = validateUserUpdates;
+module.exports = {validateUserUpdates};

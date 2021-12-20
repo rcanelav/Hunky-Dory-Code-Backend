@@ -7,4 +7,4 @@ const isPasswordMatching = ( repeatedPassword, { req } ) => {
     return true;
 }
 
-module.exports = isPasswordMatching;
+module.exports = {isPasswordMatching};
