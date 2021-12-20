@@ -10,6 +10,7 @@ const validateUserUpdates = require('../controllers/users/user-changes-validatio
 const { isExistingEmail, isExistingUserById } = require('../helpers/db-validators');
 const { fieldValidator } = require('../middlewares/field-validator');
 const { fileExtensionValidator } = require('../middlewares/file-extension-validator');
+const { userRequestValidator } = require('../middlewares/user-request-validator');
 const { validateJWT } = require('../middlewares/JWT-validator');
 const isPasswordMatching = require('../middlewares/password-validator');
 const { isAdminRole, isValidRole } = require('../middlewares/role-validator');
@@ -59,6 +60,7 @@ router.put( '/:id', [
 router.put( '/:id/image', [
     validateJWT,
     check('id', 'Id is required').not().isEmpty(),
+    userRequestValidator,
     fileExtensionValidator,
     fieldValidator
 ], updateUserImage);
