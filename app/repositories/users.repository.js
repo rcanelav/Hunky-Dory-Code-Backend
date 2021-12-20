@@ -92,7 +92,7 @@ async function getUserByVerificationCode(code) {
 async function findUserById(id) {
   const pool = await DBconnection();
   const sql =
-    "SELECT name, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate FROM users WHERE id = ?";
+    "SELECT id, name, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate FROM users WHERE id = ?";
   const [user] = await pool.query(sql, id);
 
   return user[0];
@@ -138,6 +138,14 @@ async function getLastUpdate(id) {
   return users[0].lastAuthUpdate;
 }
 
+async function setUserImage( id, imgUrl ) {
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE users set image = ? where id = ?`;
+  const [users] = await pool.query(sql, [imgUrl, id]);
+  return true;
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -150,4 +158,5 @@ module.exports = {
   setLastAuthUpdate,
   getLastUpdate,
   findUsers,
+  setUserImage,
 };
