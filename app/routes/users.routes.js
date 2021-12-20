@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { getUserProfile } = require('../controllers/users/get-user-profile.controller');
 const { getUsers } = require('../controllers/users/get-users.controller');
 const registerUser = require('../controllers/users/register-user.controller');
+const { updateUserImage } = require('../controllers/users/update-user-image');
 const updateUserById = require('../controllers/users/update-user.controller');
 const validateUserActivation = require('../controllers/users/user-activation.controller');
 const validateUserUpdates = require('../controllers/users/user-changes-validation');
@@ -53,6 +54,12 @@ router.put( '/:id', [
     check('repeatPassword', 'The repeat password is required.').custom( isPasswordMatching ), 
     fieldValidator
 ], updateUserById );
+
+router.put( '/:id/image', [
+    validateJWT,
+    check('id', 'Id is required').not().isEmpty(),
+    fieldValidator
+], updateUserImage);
 
 
 
