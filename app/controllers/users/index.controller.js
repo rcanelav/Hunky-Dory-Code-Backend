@@ -6,6 +6,7 @@ const updateUserImage = require('./update-user-image.controller');
 const updateUserById = require('./update-user.controller');
 const validateUserActivation = require('./user-activation.controller');
 const validateUserUpdates = require('./user-changes-validation.controller');
+const updateUserRole = require('./update-user-role.controller');
 
 module.exports = {
     ...getUserProfile,
@@ -14,5 +15,6 @@ module.exports = {
     ...updateUserImage,
     ...updateUserById,
     ...validateUserActivation,
-    ...validateUserUpdates
-}
+    ...validateUserUpdates,
+    ...updateUserRole,
+};

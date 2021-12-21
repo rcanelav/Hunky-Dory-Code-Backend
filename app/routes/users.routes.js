@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUserProfile, getUsers, registerUser, updateUserImage, updateUserById, validateUserActivation, validateUserUpdates } = require('../controllers/users/index.controller');
+const { getUserProfile, getUsers, registerUser, updateUserImage, updateUserById, validateUserActivation, validateUserUpdates, updateUserRole } = require('../controllers/users/index.controller');
 const { isExistingEmail, isExistingUserById } = require('../helpers/db-validators');
-const { fieldValidator, fileExtensionValidator, validateJWT, isPasswordMatching, userRequestValidator, isAdminRole } = require('../middlewares/index.middlewares');
+const { fieldValidator, fileExtensionValidator, validateJWT, isPasswordMatching, userRequestValidator, isAdminRole, isValidRole } = require('../middlewares/index.middlewares');
 const router = Router();
 
 
@@ -52,7 +52,15 @@ router.put( '/:id/image', [
     userRequestValidator,
     fileExtensionValidator,
     fieldValidator
-], updateUserImage);
+], updateUserImage );
+
+router.put( '/:id/role', [
+    validateJWT,
+    userRequestValidator,
+    isValidRole( 'STUDENT', 'EXPERT', 'ADMIN' ),
+    check('role', 'Invalid role.' ).isIn( ['STUDENT', 'EXPERT'] ),
+    fieldValidator
+], updateUserRole );
 
 
 

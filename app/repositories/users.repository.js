@@ -112,6 +112,14 @@ async function updateUser(user) {
   return true;
 }
 
+async function updateRole( id, role ) {
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE users set role = ? where id = ?`;
+  const [users] = await pool.query(sql, [role, id]);
+  return true;
+}
+
 async function updateVerificationCode(id, verificationCode) {
   const pool = await DBconnection();
   const now = new Date();
@@ -159,4 +167,5 @@ module.exports = {
   getLastUpdate,
   findUsers,
   setUserImage,
+  updateRole,
 };
