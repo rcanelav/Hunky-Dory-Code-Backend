@@ -154,6 +154,14 @@ async function setUserImage( id, imgUrl ) {
   return true;
 }
 
+async function removeUserById(id) {
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE users set verifiedAt = NULL, createdAt = NULL  where id = ?`;
+  const [users] = await pool.query(sql, id);
+  return true;
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -168,4 +176,5 @@ module.exports = {
   findUsers,
   setUserImage,
   updateRole,
+  removeUserById,
 };
