@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUserProfile, getUsers, registerUser, updateUserImage, updateUserById, validateUserActivation, validateUserUpdates, updateUserRole, deleteUser } = require('../controllers/users/index.controller');
+const { getUserProfile, getUsers, registerUser, updateUserImage, updateUserById, validateUserActivation, validateUserUpdates, updateUserRole, deleteUser, getUserAnwersById } = require('../controllers/users/index.controller');
 const { isExistingEmail, isExistingUserById } = require('../helpers/db-validators');
 const { fieldValidator, fileExtensionValidator, validateJWT, isPasswordMatching, userRequestValidator, isAdminRole, isValidRole } = require('../middlewares/index.middlewares');
 const router = Router();
@@ -68,6 +68,11 @@ router.delete( '/:id', [
     userRequestValidator,
     fieldValidator
 ], deleteUser );
+
+router.get( '/:id/answers', [
+    check('id', 'Id is required').not().isEmpty(),
+    fieldValidator
+], getUserAnwersById );
 
 
 

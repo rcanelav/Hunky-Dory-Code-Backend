@@ -162,6 +162,18 @@ async function removeUserById(id) {
   return true;
 }
 
+async function findUserAnswers(id, initial, limit) {
+  const pool = await DBconnection();
+  const sql = `
+    SELECT id, content, createdAt, posts_id FROM answers WHERE postedBy = ?
+    ORDER BY createdAt DESC
+    LIMIT ? OFFSET ?
+  `;
+  const [answers] = await pool.query(sql, [id, limit, initial]);
+
+  return answers;
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -177,4 +189,5 @@ module.exports = {
   setUserImage,
   updateRole,
   removeUserById,
+  findUserAnswers,
 };
