@@ -7,6 +7,7 @@ const updateUserById = require('./update-user.controller');
 const validateUserActivation = require('./user-activation.controller');
 const validateUserUpdates = require('./user-changes-validation.controller');
 const updateUserRole = require('./update-user-role.controller');
+const deleteUser = require('./delete-user.controller');
 
 module.exports = {
     ...getUserProfile,
@@ -17,4 +18,5 @@ module.exports = {
     ...validateUserActivation,
     ...validateUserUpdates,
     ...updateUserRole,
+    ...deleteUser,
 };

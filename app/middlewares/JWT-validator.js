@@ -28,7 +28,7 @@ const validateJWT = async ( req, res = response, next ) => {
         if( !user ) {
             throwJsonError( 404, 'Invalid token - ID' );
         }
-        if( !user.verifiedAt ) {
+        if( !user.verifiedAt && user.createdAt !== null ) {
             throwJsonError( 403, 'Invalid token - Changes need to be confirmed (email)' );
         }
         
