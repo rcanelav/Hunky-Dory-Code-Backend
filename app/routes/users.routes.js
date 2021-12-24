@@ -71,9 +71,13 @@ router.delete( '/:id', [
 
 router.get( '/:id/answers', [
     check('id', 'Id is required').not().isEmpty(),
+    check('page', 'Invalid Page').optional().custom( page => {
+        if ( parseInt(page) > 0 ) return true;
+    }),
+    check('limit', 'Invalid limit').optional().custom( limit => {
+        if ( parseInt(limit) > 0 ) return true;
+    }),
     fieldValidator
 ], getUserAnwersById );
-
-
 
 module.exports = router;
