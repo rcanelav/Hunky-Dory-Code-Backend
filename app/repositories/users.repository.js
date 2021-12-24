@@ -179,6 +179,23 @@ async function findUserAnswers(id, initial, limit) {
           totalAnswers: totalAnswers[0].totalAnswers};
 }
 
+async function findUserPosts(id, initial, limit) {
+  const pool = await DBconnection();
+  const sql = `
+    SELECT id, title, content, views, technology, postedAt  FROM posts WHERE postedBy = ?
+    ORDER BY postedAt DESC
+    LIMIT ? OFFSET ?
+  `;
+  const [posts] = await pool.query(sql, [id, limit, initial]);
+  
+  const sqlTotalUserPosts = `
+    SELECT COUNT(id) as totalPosts FROM answers WHERE postedBy = ?`;
+  const [totalPosts] = await pool.query(sqlTotalUserPosts, id);  
+  
+  return {posts,
+          totalPosts: totalPosts[0].totalPosts};
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -195,4 +212,5 @@ module.exports = {
   updateRole,
   removeUserById,
   findUserAnswers,
+  findUserPosts,
 };
