@@ -170,8 +170,13 @@ async function findUserAnswers(id, initial, limit) {
     LIMIT ? OFFSET ?
   `;
   const [answers] = await pool.query(sql, [id, limit, initial]);
-
-  return answers;
+  
+  const sqlTotalUserAnswers = `
+    SELECT COUNT(id) as totalAnswers FROM answers WHERE postedBy = ?`;
+  const [totalAnswers] = await pool.query(sqlTotalUserAnswers, id);  
+  
+  return {answers,
+          totalAnswers: totalAnswers[0].totalAnswers};
 }
 
 module.exports = {
