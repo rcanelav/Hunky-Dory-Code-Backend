@@ -16,6 +16,7 @@ class Server {
         this.middlewares();
         this.routes();
     }
+   
 
     middlewares(){
         // CORS
@@ -42,12 +43,14 @@ class Server {
         this.app.use( this.paths.answers, require('../routes/answers.routes') );
         this.app.use( this.paths.posts, require('../routes/posts.routes') );
     }
-
+    
     listen(){
-        this.app.listen( this.port, () => {
+        const server = this.app.listen( this.port, () => {
             console.log(`Server running on port ${ this.port }`);
         } );
+        return server;
     }
+    
 }
 
 module.exports = Server;

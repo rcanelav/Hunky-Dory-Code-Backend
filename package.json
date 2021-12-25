@@ -2,9 +2,12 @@
   "name": "HunkyDoryCode-Backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "test": "cross-env NODE_ENV=test jest --verbose  --detectOpenHandles",
+    "test:watch": "npm run test -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.27.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
@@ -27,6 +31,29 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "firebase": "^9.6.1"
+    "@types/jest": "^27.0.3",
+    "enhanced-resolve": "^5.8.3",
+    "firebase": "^9.6.1",
+    "jest": "^27.4.5",
+    "supertest": "^6.1.6"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "resolver": "<rootDir>/jest-resolver.cjs",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
   }
 }

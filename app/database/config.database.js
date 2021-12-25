@@ -7,6 +7,12 @@ const {
     DATABASE_NAME,
     DATABASE_USER,
     DATABASE_PASSWORD,
+    DATABASE_HOST_TEST,
+    DATABASE_PORT_TEST,
+    DATABASE_NAME_TEST,
+    DATABASE_USER_TEST,
+    DATABASE_PASSWORD_TEST,
+    NODE_ENV,
 } = process.env;
 
 let pool;
@@ -15,11 +21,11 @@ async function DBconnection(){
     try {
         if (!pool) {
             pool =  mysql.createPool({
-            host: DATABASE_HOST,
-            port: DATABASE_PORT,
-            database: DATABASE_NAME,
-            user: DATABASE_USER,
-            password: DATABASE_PASSWORD,
+            host:     NODE_ENV === 'test' ? DATABASE_HOST_TEST : DATABASE_HOST,
+            port:     NODE_ENV === 'test' ? DATABASE_PORT_TEST : DATABASE_PORT,
+            database: NODE_ENV === 'test' ? DATABASE_NAME_TEST : DATABASE_NAME,
+            user:     NODE_ENV === 'test' ? DATABASE_USER_TEST : DATABASE_USER,
+            password: NODE_ENV === 'test' ? DATABASE_PASSWORD_TEST : DATABASE_PASSWORD,
             });
         }
         return pool;

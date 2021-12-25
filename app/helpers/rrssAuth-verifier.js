@@ -1,5 +1,4 @@
 'use strict';
-
 const { auth } = require("firebase-admin");
 const { initializeApp } = require("firebase-admin/app");
 const { FIREBASE_APIKEY,
