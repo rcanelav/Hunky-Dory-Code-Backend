@@ -24,12 +24,20 @@ async function createUser(user) {
   return created.insertId;
 }
 
-async function findUsers(){
+async function findUsers( offset, limit){
   const pool = await DBconnection();
   const sql = `
-    SELECT id, name, lastname, email, role, image, technologies, createdAt, verifiedAt FROM users`;
-  const [users] = await pool.query(sql);
-  return users;
+    SELECT id, name, lastname, email, role, image, technologies, createdAt, verifiedAt FROM users LIMIT ? OFFSET ?`;
+  const [users] = await pool.query(sql, [limit, offset]);
+
+  const sqlTotalUsers = `
+    SELECT COUNT(*) AS totalUsers FROM users`;
+  const [totalUsers] = await pool.query(sqlTotalUsers);
+
+  return {
+    users,
+    totalUsers: totalUsers[0].totalUsers,
+  };
 }
 
 async function createUserByFirebaseAuth(user) {
