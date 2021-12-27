@@ -5,6 +5,7 @@ const passwordValidator = require('./password-validator');
 const userRequestValidator = require('./user-request-validator');
 const roleValidator = require('./role-validator');
 const authorshipValidator = require('./authorship-validator');
+const redisCache = require('./redisCache');
 
 module.exports = {
     ...fieldValidator,
@@ -14,4 +15,5 @@ module.exports = {
     ...userRequestValidator,
     ...roleValidator,
     ...authorshipValidator,
+    ...redisCache,
 };

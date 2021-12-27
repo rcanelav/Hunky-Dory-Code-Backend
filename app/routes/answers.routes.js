@@ -3,13 +3,14 @@ const { check } = require('express-validator');
 const { deleteAnswerById } = require('../controllers/answers/delete-answer-by-id.controller');
 const { getAnswerById } = require('../controllers/answers/get-answer-by-id.controller');
 const router = Router();
-const {fieldValidator, validateJWT, authorshipValidator } = require('../middlewares/index.middlewares');
+const {fieldValidator, validateJWT, authorshipValidator, redisCache } = require('../middlewares/index.middlewares');
 
 // Public Route
 router.get('/:id', [
    check('id', 'Id is required.').not().isEmpty(),
    check('id', 'Invalid id').isNumeric(),
-    fieldValidator
+    fieldValidator,
+    redisCache 
 ], getAnswerById );
 
 // Private route
