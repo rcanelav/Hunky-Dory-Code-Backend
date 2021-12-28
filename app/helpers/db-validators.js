@@ -1,32 +1,47 @@
 const throwJsonError = require("../errors/throw-json-error");
-const { findUserByEmail, findUserById } = require("../repositories/users.repository");
+const {
+  findUserByEmail,
+  findUserById,
+} = require("../repositories/users.repository");
 
+const {
+  findTechnologyIdByName,
+} = require("../repositories/technologies.repository");
 
-const isExistingEmail = async( email = '' ) => {
-    const emailExists = await findUserByEmail( email );
-    if ( emailExists ){
-        throwJsonError( 400, `Email: ${ email } already exists.` );
-    }
+const isExistingEmail = async (email = "") => {
+  const emailExists = await findUserByEmail(email);
+  if (emailExists) {
+    throwJsonError(400, `Email: ${email} already exists.`);
+  }
 };
-const isExistingUserById = async( id ) => {
-    const userExists = await findUserById( id);
-    if ( !userExists ){
-        throwJsonError( 400, `User with id: ${ id } does not exist.` );
-    }
+const isExistingUserById = async (id) => {
+  const userExists = await findUserById(id);
+  if (!userExists) {
+    throwJsonError(400, `User with id: ${id} does not exist.`);
+  }
 };
 
-const isUserActive = async ( email ) => {
-    const user = await findUserByEmail( email );
-    if ( !user ){
-        throwJsonError( 400, `User does not exist.` );
-    }
-    if ( !user.verifiedAt ){
-        throwJsonError( 400, `User with email: ${ email } is not active.` );
-    }
+const isUserActive = async (email) => {
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throwJsonError(400, `User does not exist.`);
+  }
+  if (!user.verifiedAt) {
+    throwJsonError(400, `User with email: ${email} is not active.`);
+  }
+};
+
+const isTechnologyExistingByName = async (name) => {
+  const tech = await findTechnologyIdByName(name);
+  if (!tech) {
+    throwJsonError(400, `Technology with name: ${name} does not exist.`);
+  }
+  return tech.id;
 };
 
 module.exports = {
-    isExistingEmail,
-    isExistingUserById,
-    isUserActive,
+  isExistingEmail,
+  isExistingUserById,
+  isUserActive,
+  isTechnologyExistingByName,
 };
