@@ -18,6 +18,7 @@ router.get('/:id', [
 router.get('/:id/likes', [
     check('id', 'Id is required.').not().isEmpty(),
     check('id', 'Invalid id').isNumeric(),
+    check('id').custom( isExistingAnswer ),
     fieldValidator
 ], getAnswerLikes );
 
