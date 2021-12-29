@@ -6,6 +6,7 @@ const { manageAnswerLike } = require('../controllers/answers/set-answer-like.con
 const router = Router();
 const {fieldValidator, validateJWT, authorshipValidator } = require('../middlewares/index.middlewares');
 const { isExistingAnswer } = require('../helpers/db-validators');
+const { getAnswerLikes } = require('../controllers/answers/get-answer-likes.controller');
 
 // Public Route
 router.get('/:id', [
@@ -13,6 +14,12 @@ router.get('/:id', [
    check('id', 'Invalid id').isNumeric(),
     fieldValidator
 ], getAnswerById );
+
+router.get('/:id/likes', [
+    check('id', 'Id is required.').not().isEmpty(),
+    check('id', 'Invalid id').isNumeric(),
+    fieldValidator
+], getAnswerLikes );
 
 // Private route
 router.delete('/:id', [
