@@ -2,7 +2,7 @@
 const { response } = require("express");
 const createJsonError = require("../../errors/create-json-error");
 const throwJsonError = require("../../errors/throw-json-error");
-const { findAnswerById, setLike, removeAnswerLike, findAnswerLikeByUserId } = require("../../repositories/answers.repository");
+const { setAnswerLike, removeAnswerLike, findAnswerLikeByUserId } = require("../../repositories/answers.repository");
 
 const manageAnswerLike = async(req, res = response) => {
     try {
@@ -18,7 +18,7 @@ const manageAnswerLike = async(req, res = response) => {
             return res.status(200).json({ msg: "Like removed." });
         }
 
-        const likedAnswer = await setLike(answer_id, user_id);
+        const likedAnswer = await setAnswerLike(answer_id, user_id);
         if(!likedAnswer) {
             throwJsonError(500, "Error giving like to answer.");
         }
