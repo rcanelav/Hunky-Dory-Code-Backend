@@ -28,7 +28,7 @@ async function findAnswerLikeByUserId( answer_id, user_id ) {
   return answer[0];
 }
 
-async function setLike( answer_id, user_id ) {
+async function setAnswerLike( answer_id, user_id ) {
   const pool = await DBconnection();
   const sql = `
     INSERT INTO answers_likes (answer_id, user_id, date) VALUES (?, ?, NOW())
@@ -64,7 +64,7 @@ async function findAnswerLikes( id ) {
 module.exports = {
     findAnswerById,
     removeAnswerById,
-    setLike,
+    setAnswerLike,
     findAnswerLikeByUserId,
     removeAnswerLike,
     findAnswerLikes,
