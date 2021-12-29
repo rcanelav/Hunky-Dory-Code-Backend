@@ -10,7 +10,8 @@ class Server {
         this.paths = {
             auth:         '/api/v1/auth',
             users:        '/api/v1/users',
-            answers:        '/api/v1/answers',
+            answers:      '/api/v1/answers',
+            posts:        '/api/v1/posts',
         };
         this.middlewares();
         this.routes();
@@ -39,6 +40,7 @@ class Server {
         this.app.use( this.paths.auth, require('../routes/auth.routes') );
         this.app.use( this.paths.users, require('../routes/users.routes') );
         this.app.use( this.paths.answers, require('../routes/answers.routes') );
+        this.app.use( this.paths.posts, require('../routes/posts.routes') );
     }
 
     listen(){

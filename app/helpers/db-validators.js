@@ -1,6 +1,7 @@
 const throwJsonError = require("../errors/throw-json-error");
 const { findUserByEmail, findUserById } = require("../repositories/users.repository");
 const { findAnswerById } = require("../repositories/answers.repository");
+const { findPostById } = require("../repositories/posts.repository");
 
 
 const isExistingEmail = async( email = '' ) => {
@@ -33,9 +34,17 @@ const isExistingAnswer = async( id ) => {
     }
 }
 
+const isExistingPost = async( id ) => {
+    const post = await findPostById( id );
+    if ( !post ){
+        throwJsonError( 400, `Post with id: ${ id } does not exist.` );
+    }
+}
+
 module.exports = {
     isExistingEmail,
     isExistingUserById,
     isUserActive,
     isExistingAnswer,
+    isExistingPost,
 };
