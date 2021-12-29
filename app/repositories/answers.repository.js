@@ -46,6 +46,20 @@ async function removeAnswerLike( answer_id, user_id ) {
   return answer.affectedRows;
 }
 
+async function findAnswerLikes( id ) {
+  const pool = await DBconnection();
+  const sql = `
+    SELECT * FROM answers_likes WHERE answer_id = ?
+  `;
+  const [answerLikes] = await pool.query( sql, [id] );
+
+  const sql2 = `
+    SELECT COUNT(*) AS totalLikes FROM answers_likes WHERE answer_id = ?`;
+  const [totalLikes] = await pool.query( sql2, [id] );
+
+  return { totalLikes: totalLikes[0].totalLikes, answerLikes };
+}
+
 
 module.exports = {
     findAnswerById,
@@ -53,4 +67,5 @@ module.exports = {
     setLike,
     findAnswerLikeByUserId,
     removeAnswerLike,
+    findAnswerLikes,
 };
