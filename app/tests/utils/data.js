@@ -1,6 +1,6 @@
-
-
-
+const supertest = require('supertest');
+const {app, sv} = require('../../../app');
+const api = supertest(app);
 
 
 const inactiveUser = 'inactiveUser@test.com';
@@ -20,4 +20,6 @@ module.exports = {
     activeUser,
     setToken,
     getToken,
+    api,
+    sv,
 };

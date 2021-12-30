@@ -35,25 +35,10 @@
     "enhanced-resolve": "^5.8.3",
     "firebase": "^9.6.1",
     "jest": "^27.4.5",
+    "jest-node-exports-resolver": "^1.1.2",
     "supertest": "^6.1.6"
   },
   "jest": {
-    "testEnvironment": "node",
-    "resolver": "<rootDir>/jest-resolver.cjs",
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    }
+    "resolver": "jest-node-exports-resolver"
   }
 }
