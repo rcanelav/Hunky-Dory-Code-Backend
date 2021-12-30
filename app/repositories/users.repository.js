@@ -190,14 +190,14 @@ async function findUserAnswers(id, initial, limit) {
 async function findUserPosts(id, initial, limit) {
   const pool = await DBconnection();
   const sql = `
-    SELECT id, title, content, views, technology, postedAt  FROM posts WHERE postedBy = ?
+    SELECT id, title, content, views, technology, postedAt FROM posts WHERE postedBy = ?
     ORDER BY postedAt DESC
     LIMIT ? OFFSET ?
   `;
   const [posts] = await pool.query(sql, [id, limit, initial]);
   
   const sqlTotalUserPosts = `
-    SELECT COUNT(id) as totalPosts FROM answers WHERE postedBy = ?`;
+    SELECT COUNT(id) as totalPosts FROM posts WHERE postedBy = ?`;
   const [totalPosts] = await pool.query(sqlTotalUserPosts, id);  
   
   return {posts,
