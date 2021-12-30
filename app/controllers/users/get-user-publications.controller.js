@@ -24,7 +24,7 @@ const getUserPublicationsById = async (req, res) => {
 
         const data = {};
         data.totalPages = Math.ceil(totalPublications / limit);  
-        if(page > data.totalPages || page < 1) {
+        if( page < 1) {
             throwJsonError(404, "Page not found");
         }
 
