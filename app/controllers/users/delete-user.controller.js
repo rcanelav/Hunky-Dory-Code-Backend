@@ -8,12 +8,14 @@ const { removeUserById, setLastAuthUpdate } = require("../../repositories/users.
 const deleteUser = async(req, res = response) => {
 
     try {
-        const { id } = req.auth;
+        const { id } = req.params;
         const removedUser = await removeUserById( id );
+        setLastAuthUpdate( id );
+        
         if( !removedUser ) {
             throwJsonError( 404, "User not found" );
         }
-        setLastAuthUpdate( id );
+        
         res.status( 200 ).json({
             msg: "User deleted successfully",
         });
