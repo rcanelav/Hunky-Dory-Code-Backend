@@ -2,20 +2,25 @@ const supertest = require('supertest');
 const {app, sv} = require('../../../app');
 const api = supertest(app);
 
+// ASSETS 
+const testImage = `app/tests/utils/assets/test.jpg`;
+const testFile = `app/tests/utils/assets/text.txt`;
 
+// USERS
 const inactiveUser = 'inactiveUser@test.com';
 const activeUser = 'activeUser@test.com';
 const admin = 'admin@admin.com';
-let token = '';
 
+// TOKEN MANAGEMENT
+let token = '';
 function setToken( newToken ) {
     token = `Bearer ${newToken}`;
 }
-
 function getToken() {
     return token;
 }
 
+// LOGIN
 async function login( email, password = '123456' ) {
     const response = await api
         .post('/api/v1/auth/login')
@@ -34,6 +39,7 @@ async function login( email, password = '123456' ) {
     return response.body;
 }
 
+// CREATE USER
 async function createUser( email = 'deleteUser@test.com', password = '123456', role = 'EXPERT') {
     const response = await api
         .post('/api/v1/users/')
@@ -59,4 +65,6 @@ module.exports = {
     createUser,
     api,
     sv,
+    testImage,
+    testFile
 };
