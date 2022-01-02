@@ -60,6 +60,22 @@ async function updatePost(post) {
   return updatedPost.affectedRows;
 }
 
+async function findPosts( limit, offset ){
+  const pool = await DBconnection();
+  const sql = `
+  SELECT * from posts LIMIT ? OFFSET ?`;
+  const [posts] = await pool.query(sql, [offset, limit]);
+
+  const sqlTotalPosts = `
+  SELECT COUNT(*) AS totalPosts FROM posts`;
+  const [totalPosts] = await pool.query(sqlTotalPosts);
+
+  return {
+    posts,
+    totalPosts: totalPosts[0].totalPosts
+  }
+}
+
 module.exports = {
     findPostById,
     findPostLikeByUserId,
@@ -67,4 +83,5 @@ module.exports = {
     setPostLike,
     findPostLikes,
     updatePost,
+    findPosts,
 };
