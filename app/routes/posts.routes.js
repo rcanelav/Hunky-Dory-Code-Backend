@@ -5,7 +5,7 @@ const { managePostLike } = require('../controllers/posts/set-post-like.controlle
 const { updatePostById } = require('../controllers/posts/update-post.controller');
 const { isExistingPost } = require('../helpers/db-validators');
 const { validateJWT, fieldValidator, postAuthorshipValidator } = require('../middlewares/index.middlewares');
-
+const { getPosts } = require('../controllers/posts/get-posts.controller')
 const router = Router();
 
 // Public routes
@@ -15,6 +15,8 @@ router.get('/:id/likes', [
     check('id').custom( isExistingPost ),
     fieldValidator
 ], getPostLikes );
+
+router.get("/", getPosts);
 
 // Private routes
 router.post('/:id/likes', [
