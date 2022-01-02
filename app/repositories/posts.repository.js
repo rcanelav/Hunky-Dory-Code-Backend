@@ -51,10 +51,20 @@ async function findPostLikes( id ) {
     return { totalLikes: totalLikes[0].totalLikes, postLikes };
 }
 
+async function updatePost(post) {
+  const pool = await DBconnection();
+  const { title, content, id } = post;
+  const sql = `
+    UPDATE posts SET title = ?, content = ? WHERE id = ?`;
+  const [updatedPost] = await pool.query(sql, [title, content, id]);
+  return updatedPost.affectedRows;
+}
+
 module.exports = {
     findPostById,
     findPostLikeByUserId,
     removePostLike,
     setPostLike,
     findPostLikes,
+    updatePost,
 };
