@@ -1,7 +1,7 @@
 const { response, request } = require("express");
 const createJsonError = require("../../errors/create-json-error");
 const throwJsonError = require("../../errors/throw-json-error");
-const { findPostsBySearchType, findPostsBySearchTechnology, findPostsBySearchDate, findPostsByAnswersQuantity } = require("../../repositories/posts.repository");
+const { findPostsBySearchType, findPostByTechnology, findPostsByDate, findPostsByAnswersQuantity } = require("../../repositories/posts.repository");
 
 async function searchPostsBy( searchData ) {
     const { searchType, limit, startIndex, body, res } = searchData;
@@ -15,10 +15,10 @@ async function searchPostsBy( searchData ) {
                     posts = await findPostsBySearchType( searchType, value, startIndex, limit );
             break;
             case "technology":
-                    posts = await findPostsBySearchTechnology( value, startIndex, limit );
+                    posts = await findPostByTechnology( value, startIndex, limit );
             break;
             case "date":
-                    posts = await findPostsBySearchDate( value, startIndex, limit );
+                    posts = await findPostsByDate( value, startIndex, limit );
             break;
             case "numAnswers":
                     posts = await findPostsByAnswersQuantity( value, startIndex, limit );

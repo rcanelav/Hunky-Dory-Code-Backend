@@ -91,7 +91,7 @@ async function findPostsBySearchType(type, value, offset, limit ){
   };
 }
 
-async function findPostsBySearchTechnology( value, offset, limit ){
+async function findPostByTechnology( value, offset, limit ){
   const pool = await DBconnection();
   const sql = `
     SELECT
@@ -115,7 +115,7 @@ async function findPostsBySearchTechnology( value, offset, limit ){
   };
 }
 
-async function findPostsBySearchDate ( date, offset, limit ) {
+async function findPostsByDate ( date, offset, limit ) {
   const { from, to } = date;
   const pool = await DBconnection();
   const sql = `
@@ -163,7 +163,7 @@ module.exports = {
     updatePost,
     findPosts,
     findPostsBySearchType,
-    findPostsBySearchTechnology,
-    findPostsBySearchDate,
+    findPostByTechnology,
+    findPostsByDate,
     findPostsByAnswersQuantity
 };
