@@ -12,6 +12,7 @@ class Server {
             users:        '/api/v1/users',
             answers:      '/api/v1/answers',
             posts:        '/api/v1/posts',
+            search:       '/api/v1/search',
         };
         this.middlewares();
         this.routes();
@@ -41,6 +42,7 @@ class Server {
         this.app.use( this.paths.users, require('../routes/users.routes') );
         this.app.use( this.paths.answers, require('../routes/answers.routes') );
         this.app.use( this.paths.posts, require('../routes/posts.routes') );
+        this.app.use( this.paths.search, require('../routes/search.routes') );
     }
 
     listen(){
