@@ -204,6 +204,31 @@ async function findUserPosts(id, initial, limit) {
           totalPosts: totalPosts[0].totalPosts};
 }
 
+async function findPublicationLikesGivenByUser( id, offset, limit ) {
+  const pool = await DBconnection();
+  const sqlPublicationLikes = `
+    select *, 'post' as type from posts_likes where user_id = ?
+    union all
+    select *, 'answer' as type from answers_likes
+    where user_id = ? LIMIT ? OFFSET ?`;
+
+  const [likedPublications] = await pool.query(sqlPublicationLikes, [id, id, limit, offset]);
+  const sqlTotalPublicationsLikes = `
+    select count(*) as totalLikedPublications from
+    (
+      select id, post_id, user_id, date from posts_likes where user_id = ?
+      union all
+      select id, answer_id, user_id, date from answers_likes
+      where user_id = ?
+    ) likes`;
+
+  const [totalLikedPublications] = await pool.query(sqlTotalPublicationsLikes, [id, id]);
+  return {
+    likedPublications,
+    totalLikedPublications: totalLikedPublications[0].totalLikedPublications
+  };
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -221,4 +246,5 @@ module.exports = {
   removeUserById,
   findUserAnswers,
   findUserPosts,
+  findPublicationLikesGivenByUser,
 };
