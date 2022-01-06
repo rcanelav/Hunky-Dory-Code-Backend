@@ -2,7 +2,7 @@ const throwJsonError = require("../errors/throw-json-error");
 const { findUserByEmail, findUserById } = require("../repositories/users.repository");
 const { findAnswerById } = require("../repositories/answers.repository");
 const { findPostById } = require("../repositories/posts.repository");
-const { findTechnologyById } = require("../repositories/technologies.repository");
+const { findTechnologyById, findTechnologyByName } = require("../repositories/technologies.repository");
 
 
 const isExistingEmail = async( email = '' ) => {
@@ -49,6 +49,13 @@ const isExistingTechnology = async( technologyId ) => {
     }
 }
 
+const isExistingTechnologyByName = async( technologyName ) => {
+    const technology = await findTechnologyByName( technologyName );
+    if ( technology ){
+        throwJsonError( 400, `Technology with name: ${ technologyName } already exists.` );
+    }
+}
+
 module.exports = {
     isExistingEmail,
     isExistingUserById,
@@ -56,4 +63,5 @@ module.exports = {
     isExistingAnswer,
     isExistingPost,
     isExistingTechnology,
+    isExistingTechnologyByName,
 };

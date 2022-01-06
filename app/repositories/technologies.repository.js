@@ -19,7 +19,17 @@ async function findTechnologies() {
     return technologies;
 }
 
+async function findTechnologyByName(name) {
+    const pool = await DBconnection();
+    const sql = `
+        SELECT * FROM technologies WHERE name = ?
+    `;
+    const [technology] = await pool.query(sql, [name]);
+    return technology[0].name;
+}
+
 module.exports = {
     findTechnologyById,
     findTechnologies,
+    findTechnologyByName,
 };
