@@ -229,6 +229,19 @@ async function findPublicationLikesGivenByUser( id, offset, limit ) {
   };
 }
 
+async function findUserRating(id) {
+  const pool = await DBconnection();
+  const sql = `
+  SELECT
+    (select count(*) from posts
+                inner join posts_likes on posts.id = posts_likes.post_id where posts.postedBy = ?) + 
+    (select count(*) from answers
+                inner join answers_likes on answers.id = answers_likes.answer_id where answers.postedBy = ?) as userRating
+  `;
+  const [rating] = await pool.query(sql, [id, id]);
+  return rating[0].userRating;
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
@@ -247,4 +260,5 @@ module.exports = {
   findUserAnswers,
   findUserPosts,
   findPublicationLikesGivenByUser,
+  findUserRating,
 };
