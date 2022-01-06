@@ -163,6 +163,14 @@ async function createNewPost( post ) {
   return true
 }
 
+async function removePostById( id ) {
+  const pool = await DBconnection();
+  const sql = `
+    DELETE FROM posts WHERE id = ?`;
+  const [post] = await pool.query(sql, [id]);
+  return post.affectedRows;
+}
+
 module.exports = {
     findPostById,
     findPostLikeByUserId,
@@ -176,4 +184,5 @@ module.exports = {
     findPostsByDate,
     findPostsByAnswersQuantity,
     createNewPost,
+    removePostById,
 };

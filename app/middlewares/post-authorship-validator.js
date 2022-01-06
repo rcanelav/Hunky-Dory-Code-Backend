@@ -21,7 +21,7 @@ const postAuthorshipValidator = async(req, res = response, next) => {
         const { postedBy } = post;
         
         if ( postedBy !== id && role !== "ADMIN" ) {
-            throwJsonError(403, "You are not allowed to delete this answer");
+            throwJsonError(403, "You are not allowed to manage this post");
         }
 
         next();

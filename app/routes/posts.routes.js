@@ -8,6 +8,7 @@ const { validateJWT, fieldValidator, postAuthorshipValidator } = require('../mid
 const { getPosts } = require('../controllers/posts/get-posts.controller')
 const { getPostById } = require('../controllers/posts/get-post-by-id.controller');
 const { createPost } = require('../controllers/posts/create-post.controller');
+const { deletePostById } = require('../controllers/posts/delete-post-by-id.controller');
 const router = Router();
 
 // Public routes
@@ -58,6 +59,12 @@ router.put(
       fieldValidator,
     ],
     updatePostById
-  );
+);
+
+router.delete( "/:id", [
+    validateJWT,
+    postAuthorshipValidator,
+    fieldValidator
+], deletePostById );
 
 module.exports = router;
