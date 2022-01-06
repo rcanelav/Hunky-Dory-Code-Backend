@@ -6,6 +6,7 @@ const userRequestValidator = require('./user-request-validator');
 const roleValidator = require('./role-validator');
 const authorshipValidator = require('./authorship-validator');
 const postAuthorshipValidator = require('./post-authorship-validator');
+const replyValidator = require('./reply-validator');
 
 module.exports = {
     ...fieldValidator,
@@ -16,4 +17,5 @@ module.exports = {
     ...roleValidator,
     ...authorshipValidator,
     ...postAuthorshipValidator,
+    ...replyValidator,
 };

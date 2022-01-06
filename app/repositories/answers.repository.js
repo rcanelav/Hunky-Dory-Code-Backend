@@ -60,6 +60,14 @@ async function findAnswerLikes( id ) {
   return { totalLikes: totalLikes[0].totalLikes, answerLikes };
 }
 
+async function createNewAnswer( answer ) {
+  const pool = await DBconnection();
+  const sql = `
+    INSERT INTO answers (content, postedBy, posts_id, createdAt) VALUES (?, ?, ?, NOW())
+  `;
+  const [answerId] = await pool.query( sql, [answer.content, answer.postedBy, answer.posts_id] );
+  return answerId.insertId;
+}
 
 module.exports = {
     findAnswerById,
@@ -68,4 +76,5 @@ module.exports = {
     findAnswerLikeByUserId,
     removeAnswerLike,
     findAnswerLikes,
+    createNewAnswer,
 };

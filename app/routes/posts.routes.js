@@ -4,11 +4,12 @@ const { getPostLikes } = require('../controllers/posts/get-post-likes.controller
 const { managePostLike } = require('../controllers/posts/set-post-like.controller');
 const { updatePostById } = require('../controllers/posts/update-post.controller');
 const { isExistingPost, isExistingTechnology } = require('../helpers/db-validators');
-const { validateJWT, fieldValidator, postAuthorshipValidator } = require('../middlewares/index.middlewares');
+const { validateJWT, fieldValidator, postAuthorshipValidator, replyValidator } = require('../middlewares/index.middlewares');
 const { getPosts } = require('../controllers/posts/get-posts.controller')
 const { getPostById } = require('../controllers/posts/get-post-by-id.controller');
 const { createPost } = require('../controllers/posts/create-post.controller');
 const { deletePostById } = require('../controllers/posts/delete-post-by-id.controller');
+const { createAnswer } = require('../controllers/posts/create-post-answer.controller');
 const router = Router();
 
 // Public routes
@@ -30,7 +31,17 @@ router.post('/', [
     check('content', 'Content is required.').not().isEmpty(),
     check('technology').custom( isExistingTechnology ),
     fieldValidator
-], createPost)
+], createPost);
+
+router.post('/:id/answers', [
+    validateJWT,
+    check('id', 'Id is required.').not().isEmpty(),
+    check('id', 'Invalid id').isNumeric(),
+    check('id').custom( isExistingPost ),
+    check('content', 'Content is required.').not().isEmpty(),
+    replyValidator,
+    fieldValidator
+], createAnswer );
 
 router.post('/:id/likes', [
     validateJWT,
