@@ -1,0 +1,25 @@
+"use strict";
+const DBconnection = require("../database/config.database");
+
+async function findTechnologyById(id) {
+  const pool = await DBconnection();
+  const sql = `
+    SELECT * FROM technologies WHERE id = ?
+  `;
+  const [technology] = await pool.query(sql, [id]);
+  return technology[0];
+}
+
+async function findTechnologies() {
+    const pool = await DBconnection();
+    const sql = `
+        SELECT * FROM technologies
+    `;
+    const [technologies] = await pool.query(sql);
+    return technologies;
+}
+
+module.exports = {
+    findTechnologyById,
+    findTechnologies,
+};

@@ -153,6 +153,15 @@ async function findPostsByAnswersQuantity( numAnswers, offset, limit ) {
   };
 }
 
+async function createNewPost( post ) {
+  const pool = await DBconnection();
+  const { title, content, technology, postedBy } = post;
+  const sql = `
+    INSERT INTO posts (title, content, technology, postedBy, postedAt)
+    VALUES (?, ?, ?, ?, NOW())`;
+  const [newPost] = await pool.query(sql, [title, content, technology, postedBy]);
+  return true
+}
 
 module.exports = {
     findPostById,
@@ -165,5 +174,6 @@ module.exports = {
     findPostsBySearchType,
     findPostByTechnology,
     findPostsByDate,
-    findPostsByAnswersQuantity
+    findPostsByAnswersQuantity,
+    createNewPost,
 };

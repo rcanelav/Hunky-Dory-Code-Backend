@@ -2,6 +2,7 @@ const throwJsonError = require("../errors/throw-json-error");
 const { findUserByEmail, findUserById } = require("../repositories/users.repository");
 const { findAnswerById } = require("../repositories/answers.repository");
 const { findPostById } = require("../repositories/posts.repository");
+const { findTechnologyById } = require("../repositories/technologies.repository");
 
 
 const isExistingEmail = async( email = '' ) => {
@@ -41,10 +42,18 @@ const isExistingPost = async( id ) => {
     }
 }
 
+const isExistingTechnology = async( technologyId ) => {
+    const technology = await findTechnologyById( technologyId );
+    if ( !technology ){
+        throwJsonError( 400, `Technology with id: ${ technologyId } does not exist.` );
+    }
+}
+
 module.exports = {
     isExistingEmail,
     isExistingUserById,
     isUserActive,
     isExistingAnswer,
     isExistingPost,
+    isExistingTechnology,
 };

@@ -3,10 +3,11 @@ const { check } = require('express-validator');
 const { getPostLikes } = require('../controllers/posts/get-post-likes.controller');
 const { managePostLike } = require('../controllers/posts/set-post-like.controller');
 const { updatePostById } = require('../controllers/posts/update-post.controller');
-const { isExistingPost } = require('../helpers/db-validators');
+const { isExistingPost, isExistingTechnology } = require('../helpers/db-validators');
 const { validateJWT, fieldValidator, postAuthorshipValidator } = require('../middlewares/index.middlewares');
 const { getPosts } = require('../controllers/posts/get-posts.controller')
 const { getPostById } = require('../controllers/posts/get-post-by-id.controller');
+const { createPost } = require('../controllers/posts/create-post.controller');
 const router = Router();
 
 // Public routes
@@ -22,6 +23,14 @@ router.get("/", getPosts);
 router.get("/:id", getPostById);
 
 // Private routes
+router.post('/', [
+    validateJWT,
+    check('title', 'Title is required.').not().isEmpty(),
+    check('content', 'Content is required.').not().isEmpty(),
+    check('technology').custom( isExistingTechnology ),
+    fieldValidator
+], createPost)
+
 router.post('/:id/likes', [
     validateJWT,
     check('id', 'Answer id is required.').not().isEmpty(),
