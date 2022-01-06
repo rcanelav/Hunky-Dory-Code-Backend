@@ -1,13 +1,17 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { search } = require('../controllers/search/search.controller');
 const { getTechnologies } = require('../controllers/technologies/get-technologies.controller');
-const { isUserActive } = require('../helpers/db-validators');
-const { fieldValidator } = require('../middlewares/field-validator');
+const { getTechnologyById } = require('../controllers/technologies/get-technology-by-id.controller');
+const { fieldValidator } = require('../middlewares/index.middlewares');
 
 const router = Router();
 
 router.get('/', getTechnologies );
+
+router.get('/:id', [
+    check('id', 'Invalid id.').isNumeric(),
+    fieldValidator
+], getTechnologyById );
 
 
 
