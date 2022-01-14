@@ -18,7 +18,7 @@ router.get('/:id', [
 router.post('/', [
     validateJWT,
     isAdminRole,
-    check('technology').custom( isExistingTechnologyByName ),
+    check( 'technology' ).custom( isExistingTechnologyByName ),
     fieldValidator
 ], createTechnology)
 

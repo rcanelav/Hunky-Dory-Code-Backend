@@ -1,6 +1,15 @@
 "use strict";
 const DBconnection = require("../database/config.database");
 
+async function registerNewTechnology(name) {
+    const pool = await DBconnection();
+    const sql = `
+        INSERT INTO technologies (name) VALUES (?)
+    `;
+    const [technology] = await pool.query(sql, [name]);
+    return technology;
+}
+
 async function findTechnologyById(id) {
   const pool = await DBconnection();
   const sql = `
@@ -25,11 +34,12 @@ async function findTechnologyByName(name) {
         SELECT * FROM technologies WHERE name = ?
     `;
     const [technology] = await pool.query(sql, [name]);
-    return technology[0].name;
+    return technology[0]?.name;
 }
 
 module.exports = {
     findTechnologyById,
     findTechnologies,
     findTechnologyByName,
+    registerNewTechnology,
 };
