@@ -5,8 +5,10 @@ const {
     SMTP_HOST,
     SMTP_USER,
     SMTP_PASS,
+    PORT,
+    DEPLOY_URL,
 } = process.env;
-  
+
 const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
@@ -18,7 +20,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendRegisterEmail( name, email, code ) {
-  const activationLink = `http://localhost:3000/api/v1/users/activation?code=${ code }`;
+  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:'+PORT}/api/v1/users/activation?code=${ code }`;
   const mailData = {
     from: SMTP_USER,
     to: email,
@@ -31,7 +33,7 @@ async function sendRegisterEmail( name, email, code ) {
 }
 
 async function sendUpdateConfirmationEmail( name, email, code ) {
-  const activationLink = `http://localhost:3000/api/v1/users/confirmation?code=${ code }`;
+  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:'+PORT}/api/v1/users/confirmation?code=${ code }`;
   const mailData = {
     from: SMTP_USER,
     to: email,
