@@ -11,6 +11,7 @@ const deleteUser = require('./delete-user.controller');
 const getUserPublicationsById = require('./get-user-publications.controller');
 const getUserLikes = require('./get-user-likes.controller');
 const getUserRating = require('./get-user-rating.controller');
+const setUserAdmin = require('./set-user-admin.controller');
 
 module.exports = {
     ...getUserProfile,
@@ -25,4 +26,5 @@ module.exports = {
     ...getUserPublicationsById,
     ...getUserLikes,
     ...getUserRating,
+    ...setUserAdmin
 };

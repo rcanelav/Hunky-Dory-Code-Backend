@@ -128,6 +128,14 @@ async function updateRole( id, role ) {
   return true;
 }
 
+async function setAdmin(id) {
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE users set role = 'admin' where id = ?`;
+  const [users] = await pool.query(sql, id);
+  return users.affectedRows === 1;
+}
+
 async function updateVerificationCode(id, verificationCode) {
   const pool = await DBconnection();
   const now = new Date();
@@ -261,4 +269,5 @@ module.exports = {
   findUserPosts,
   findPublicationLikesGivenByUser,
   findUserRating,
+  setAdmin,
 };
