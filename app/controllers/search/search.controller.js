@@ -12,6 +12,9 @@ async function searchPostsBy( searchData ) {
             startIndex,
             res,
             technology,
+            numAnswers,
+            from,
+            to,
         } = searchData;
             let posts = [];
     let invalidSearchType = false;
@@ -25,11 +28,9 @@ async function searchPostsBy( searchData ) {
                 posts = await findPostByTechnology( q, technology, startIndex, limit, order, direction );
                 break;
             case "date":
-                let { from, to } = searchData;
                 posts = await findPostsByDate( q, from, to, startIndex, limit, order, direction );
             break;
             case "numAnswers":
-                    const { numAnswers } = searchData;
                     posts = await findPostsByAnswersQuantity( q, numAnswers, startIndex, limit, order, direction );
             break;
             default:
@@ -45,7 +46,7 @@ async function searchPostsBy( searchData ) {
 const queryParamsValidator = (query) => {
     let {searchBy, order, direction, q} = query;
     const validSearchBy = ["title", "content", "technology", "date", "numAnswers"];
-    const validOrder = ["title", "postedAt", "views"];
+    const validOrder = ["title", "postedAt", "views", "likes", "numAnswers"];
     const validDirection = ["ASC", "DESC"];
     if( !q ) q = '';
     if( !searchBy || !validSearchBy.includes(searchBy)){
