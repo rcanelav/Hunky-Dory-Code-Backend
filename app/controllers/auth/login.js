@@ -69,7 +69,7 @@ const firebaseAuth = async (req, res) => {
     const token = await generateJWT(user);
     setLastAuthUpdate(user.id);
     res.status(201).json({
-      token,
+      accessToken: token,
       email,
     });
   } catch (error) {
