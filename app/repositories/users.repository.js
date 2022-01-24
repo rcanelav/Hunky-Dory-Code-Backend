@@ -6,10 +6,10 @@ async function createUser(user) {
   const sql = `
       INSERT INTO users(
         name, lastname, email, password, verificationCode, role,
-        createdAt
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        createdAt, image
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
-  const { name, lastname, email, passwordHash, verificationCode, role } = user;
+  const { name, lastname, email, passwordHash, verificationCode, role, image } = user;
   const now = new Date();
   const [created] = await pool.query(sql, [
     name,
@@ -19,6 +19,7 @@ async function createUser(user) {
     verificationCode,
     role,
     now,
+    image
   ]);
 
   return created.insertId;

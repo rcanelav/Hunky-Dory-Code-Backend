@@ -20,6 +20,7 @@ async function DBconnection(){
             database: DATABASE_NAME,
             user: DATABASE_USER,
             password: DATABASE_PASSWORD,
+            connectionLimit: 4
             });
         }
         return pool;
