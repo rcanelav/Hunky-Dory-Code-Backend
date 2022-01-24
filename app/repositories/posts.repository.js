@@ -83,10 +83,14 @@ async function findPostsBySearchType(type, q, offset, limit, order, direction ){
     const pool = await DBconnection();
     const sql = `SELECT posts.*,
     count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers
+    count(answers.posts_id) as numAnswers,
+    users.name as userName,
+    users.lastname as userLastname,
+    users.image as userImage
     FROM posts
     LEFT JOIN posts_likes ON posts.id = posts_likes.post_id
     LEFT JOIN answers ON posts.id = answers.posts_id
+    LEFT JOIN users on posts.postedBy = users.id
     WHERE posts.?? like ? GROUP BY posts.id ORDER BY ?? ${direction} LIMIT ? OFFSET ?`;
     const [posts] = await pool.query(sql, [`${type}`, `%${q}%`, `${order}`, limit, offset]);
     const sqlTotalPosts = `
@@ -107,11 +111,15 @@ async function findPostByTechnology( value, technology, offset, limit, order, di
     SELECT
     posts.*,
     count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers
+    count(answers.posts_id) as numAnswers,
+    users.name as userName,
+    users.lastname as userLastname,
+    users.image as userImage
     FROM posts
     INNER JOIN technologies ON posts.technology = technologies.id
     LEFT JOIN posts_likes on posts.id = posts_likes.post_id
     LEFT JOIN answers ON posts.id = answers.posts_id
+    LEFT JOIN users on posts.postedBy = users.id
     WHERE technologies.name = ? && posts.content like ? GROUP BY posts.id ORDER BY ?? ${ direction } LIMIT ? OFFSET ?`;
   const [posts] = await pool.query(sql, [technology, `%${value}%`, order, limit, offset]);
 
@@ -134,10 +142,14 @@ async function findPostsByDate ( value, initial = 0, end = new Date(), offset, l
   const sql = `
     SELECT posts.*,
     count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers
+    count(answers.posts_id) as numAnswers,
+    users.name as userName,
+    users.lastname as userLastname,
+    users.image as userImage
     FROM posts
     LEFT JOIN posts_likes ON posts.id = posts_likes.post_id
     LEFT JOIN answers ON posts.id = answers.posts_id
+    LEFT JOIN users on posts.postedBy = users.id
     WHERE posts.content like ? && postedAt BETWEEN ? AND ? + INTERVAL '1' DAY
     GROUP BY posts.id ORDER BY ?? ${direction} LIMIT ? OFFSET ?`;
   const [posts] = await pool.query(sql, [`%${value}%`, initial, end, order, limit, offset]);
@@ -158,10 +170,14 @@ async function findPostsByAnswersQuantity(value, numAnswers = 0, offset, limit, 
   const sql = `
   SELECT posts.*,
   count(answers.posts_id) as numAnswers,
-  count(posts_likes.post_id) as likes
+  count(posts_likes.post_id) as likes,
+  users.name as userName,
+  users.lastname as userLastname,
+  users.image as userImage
   FROM posts
   LEFT JOIN answers ON posts.id = answers.posts_id
   LEFT JOIN posts_likes ON posts.id = posts_likes.post_id
+  LEFT JOIN users on posts.postedBy = users.id
   WHERE posts.content LIKE ?
   GROUP BY posts.id HAVING numAnswers >= ? ORDER BY ?? ${ direction } LIMIT ? OFFSET ?`;
   const [posts] = await pool.query(sql, [`%${value}%`, numAnswers, order, limit, offset]);
