@@ -96,6 +96,7 @@ async function search( req = request, res = response ) {
         } = await searchPostsBy( searchData );
 
         data.totalPages = Math.ceil( totalPosts / limit );
+        data.totalResults = totalPosts;
         results = posts;
 
         if( startIndex ) {
