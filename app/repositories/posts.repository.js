@@ -6,7 +6,11 @@ const throwJsonError = require("../errors/throw-json-error");
 async function findPostById( id ) {
   const pool = await DBconnection();
   const sql = `
-    SELECT * FROM posts WHERE id = ?
+    SELECT posts.*, technologies.id as technologyId, technologies.name as technologyName, users.name as userName, users.lastname as userLastname, users.image as userImage, users.id as userId
+    FROM posts
+    LEFT JOIN users on posts.postedBy = users.id
+    LEFT JOIN technologies ON posts.technology = technologies.id
+    WHERE posts.id = ?
   `;
   const [post] = await pool.query(sql, [id]);
   return post[0];
