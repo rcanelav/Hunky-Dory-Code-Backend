@@ -25,6 +25,24 @@ async function findPostLikeByUserId( post_id, user_id ) {
   return post[0];
 }
 
+async function findPostAnswers( id, limit, offset ){
+  const pool = await DBconnection();
+  const sql = `
+    SELECT * FROM answers WHERE posts_id = ?
+    ORDER BY createdAt DESC LIMIT ? OFFSET ?`;
+  const [answers] = await pool.query(sql, [id, limit, offset]);
+
+  const sqlTotalAnswers = `
+    SELECT COUNT(*) as totalAnswers FROM answers WHERE posts_id = ?
+  `;
+  const [totalAnswers] = await pool.query(sqlTotalAnswers, [id]);
+
+  return {
+    answers,
+    totalAnswers: totalAnswers[0].totalAnswers
+  };
+}
+
 async function removePostLike( post_id, user_id ) {
   const pool = await DBconnection();
   const sql = `
@@ -221,6 +239,7 @@ async function removePostById( id ) {
 module.exports = {
     findPostById,
     findPostLikeByUserId,
+    findPostAnswers,
     removePostLike,
     setPostLike,
     findPostLikes,

@@ -10,6 +10,7 @@ const { getPostById } = require('../controllers/posts/get-post-by-id.controller'
 const { createPost } = require('../controllers/posts/create-post.controller');
 const { deletePostById } = require('../controllers/posts/delete-post-by-id.controller');
 const { createAnswer } = require('../controllers/posts/create-post-answer.controller');
+const { getPostAnswers } = require('../controllers/posts/get-post-answers.controller');
 const router = Router();
 
 // Public routes
@@ -23,6 +24,8 @@ router.get('/:id/likes', [
 router.get("/", getPosts);
 
 router.get("/:id", getPostById);
+
+router.get("/:id/answers", getPostAnswers);
 
 // Private routes
 router.post('/', [
