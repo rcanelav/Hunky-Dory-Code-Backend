@@ -28,7 +28,10 @@ async function findPostLikeByUserId( post_id, user_id ) {
 async function findPostAnswers( id, limit, offset ){
   const pool = await DBconnection();
   const sql = `
-    SELECT * FROM answers WHERE posts_id = ?
+    SELECT answers.*, count(answers_likes.user_id) as totalLikes
+    FROM answers
+    left join answers_likes on answers.id = answers_likes.answer_id
+    WHERE posts_id = ? GROUP BY answers.id
     ORDER BY createdAt DESC LIMIT ? OFFSET ?`;
   const [answers] = await pool.query(sql, [id, limit, offset]);
 

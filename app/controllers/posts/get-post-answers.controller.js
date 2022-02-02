@@ -2,6 +2,7 @@
 const { response } = require("express");
 const createJsonError = require("../../errors/create-json-error");
 const { findPostAnswers } = require("../../repositories/posts.repository");
+const { findAnswerLikes } = require("../../repositories/answers.repository");
 
 const getPostAnswers = async(req, res = response) => {
     try {
@@ -13,7 +14,17 @@ const getPostAnswers = async(req, res = response) => {
         if( page < 1 ){
             throwJsonError(404, "Page not found.");
         }
-        const { answers, totalAnswers } = await findPostAnswers( id, limit, startIndex );
+        let { answers, totalAnswers } = await findPostAnswers( id, limit, startIndex );
+
+        answers = answers.map( async answer => {
+            const likesData = await findAnswerLikes( answer.id );
+            return {
+                ...answer,
+                likes:  likesData
+            };
+        })
+        answers = await Promise.all(answers);
+
         const data = {};
         data.totalPages = Math.ceil( totalAnswers / limit );
         data.totalAnswers = totalAnswers;
