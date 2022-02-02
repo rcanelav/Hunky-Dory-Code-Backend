@@ -101,7 +101,7 @@ async function getUserByVerificationCode(code) {
 async function findUserById(id) {
   const pool = await DBconnection();
   const sql =
-    "SELECT id, name, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate, technologies FROM users WHERE id = ?";
+    "SELECT id, name, lastname, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate, technologies FROM users WHERE id = ?";
   const [user] = await pool.query(sql, id);
 
   return user[0];
