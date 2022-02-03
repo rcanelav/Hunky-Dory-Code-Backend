@@ -18,10 +18,10 @@ const replyValidator = async(req, res = response, next) => {
         const { technologies: userTechnology } = await findUserById(id);
         const {name: categoryName} = await findTechnologyById(postCategory);
 
-        if( postedBy !== id && !role.includes("EXPERT", "ADMIN") ) {
+        if( postedBy !== id && !role.includes("ADMIN") && !role.includes("EXPERT")) {
             throwJsonError(403, "Only experts can reply to posts.");
         }
-        if( postedBy !== id && postCategory !== userTechnology && role !== "ADMIN" ) {
+        if( postedBy !== id && postCategory !== userTechnology && !role.includes("ADMIN") ) {
             throwJsonError(403, `You are not allowed to reply to posts in ${categoryName} category.`);
         }
         next();
