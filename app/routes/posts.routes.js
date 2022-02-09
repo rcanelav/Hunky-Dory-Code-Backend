@@ -11,6 +11,7 @@ const { createPost } = require('../controllers/posts/create-post.controller');
 const { deletePostById } = require('../controllers/posts/delete-post-by-id.controller');
 const { createAnswer } = require('../controllers/posts/create-post-answer.controller');
 const { getPostAnswers } = require('../controllers/posts/get-post-answers.controller');
+const { setPostView } = require('../controllers/posts/set-post-view');
 const router = Router();
 
 // Public routes
@@ -26,6 +27,8 @@ router.get("/", getPosts);
 router.get("/:id", getPostById);
 
 router.get("/:id/answers", getPostAnswers);
+
+router.put("/:id/view", setPostView);
 
 // Private routes
 router.post('/', [

@@ -87,6 +87,14 @@ async function updatePost(post) {
   return updatedPost.affectedRows;
 }
 
+async function addPostView ( id ) {
+  const pool = await DBconnection();
+  const sql = `
+    UPDATE posts SET views = views + 1 WHERE id = ?`;
+  const [post] = await pool.query(sql, [id]);
+  return post.affectedRows;
+}
+
 async function findPosts( limit, offset ){
   const pool = await DBconnection();
   const sql = `
@@ -240,6 +248,7 @@ async function removePostById( id ) {
 }
 
 module.exports = {
+   addPostView,
     findPostById,
     findPostLikeByUserId,
     findPostAnswers,
