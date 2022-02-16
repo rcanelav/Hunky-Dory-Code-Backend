@@ -236,7 +236,8 @@ async function createNewPost( post ) {
     INSERT INTO posts (title, content, technology, postedBy, postedAt)
     VALUES (?, ?, ?, ?, NOW())`;
   const [newPost] = await pool.query(sql, [title, content, technology, postedBy]);
-  return true
+
+  return newPost.insertId
 }
 
 async function removePostById( id ) {
