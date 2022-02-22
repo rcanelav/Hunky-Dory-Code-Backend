@@ -7,7 +7,8 @@ const updateUserRole = async( req, res = response) => {
     try {
         const { id } = req.auth;
         const { role } = req.body;
-        const user = await updateRole( id, role );
+        const { technology } = req.body;
+        const user = await updateRole( id, role, technology );
         if( !user ){
             throwJsonError( 500, 'Error updating role' );
         }

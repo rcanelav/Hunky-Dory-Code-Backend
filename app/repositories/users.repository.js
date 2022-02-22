@@ -111,21 +111,30 @@ async function updateUser(user) {
   const { id, name, lastname, email, password } = user;
   const now = new Date();
   const pool = await DBconnection();
-  const sql = `
+  if(password){
+    const sql = `
     UPDATE users
     SET name = ?, lastname = ?, email = ?, password = ?, updatedAt = ?
     WHERE id = ?
   `;
-  await pool.query(sql, [name, lastname, email, password, now, id]);
+    await pool.query(sql, [name, lastname, email, password, now, id]);
+  }else{
+    const sql = `
+    UPDATE users
+    SET name = ?, lastname = ?, email = ?, updatedAt = ?
+    WHERE id = ?
+  `;
+    await pool.query(sql, [name, lastname, email, now, id]);
+  }
 
   return true;
 }
 
-async function updateRole( id, role ) {
+async function updateRole( id, role, technology = null ) {
   const pool = await DBconnection();
   const sql = `
-    UPDATE users set role = ? where id = ?`;
-  const [users] = await pool.query(sql, [role, id]);
+    UPDATE users set role = ?, technologies = ? where id = ?`;
+  const [users] = await pool.query(sql, [role, !technology ? null : technology, id]);
   return true;
 }
 
