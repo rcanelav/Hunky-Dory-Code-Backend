@@ -2,6 +2,9 @@
  
  `npm install`
 
+## Deployed @
+https://hunky-dory-code.herokuapp.com/
+
 ## Api docs
 https://documenter.getpostman.com/view/11049007/UVRGEPag
 
