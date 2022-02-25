@@ -35,9 +35,16 @@ const validateJWT = async ( req, res = response, next ) => {
         const date = user.lastAuthUpdate;
         const lastAuth = new Date(date);
         const tokenEmissionDate = new Date( iat * 1000 );
-        if( tokenEmissionDate < lastAuth ) {
+        const timeDiff = Math.abs( lastAuth.getTime() - tokenEmissionDate.getTime() );
+        const diffHour = Math.ceil( timeDiff / (1000 * 3600 ) );
+        if( diffHour > 1 ) {
             throwJsonError( 403, 'Invalid token - Token expired' );
         }
+
+        // const tokenEmissionDate = new Date( iat * 1000 );
+        // if( tokenEmissionDate < lastAuth ) {
+        //     throwJsonError( 403, 'Invalid token - Token expired' );
+        // }
         
         req.auth = { id, name, lastname, role};
         next();
