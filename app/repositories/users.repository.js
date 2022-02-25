@@ -100,8 +100,12 @@ async function getUserByVerificationCode(code) {
 
 async function findUserById(id) {
   const pool = await DBconnection();
-  const sql =
-    "SELECT id, name, lastname, email, image, role, password, createdAt, verifiedAt, lastAuthUpdate, technologies FROM users WHERE id = ?";
+  const sql =`
+    SELECT users.id, users.name, users.lastname, users.email, users.image, users.role, users.password, users.createdAt, users.verifiedAt, users.lastAuthUpdate, users.technologies, technologies.name as technologyName 
+    FROM users 
+    inner join technologies on users.technologies = technologies.id 
+    WHERE users.id = ?
+  `;
   const [user] = await pool.query(sql, id);
 
   return user[0];
@@ -208,9 +212,17 @@ async function findUserAnswers(id, initial, limit) {
 async function findUserPosts(id, initial, limit) {
   const pool = await DBconnection();
   const sql = `
-    SELECT id, title, content, views, technology, postedAt FROM posts WHERE postedBy = ?
-    ORDER BY postedAt DESC
-    LIMIT ? OFFSET ?
+  SELECT posts.*,
+  count(posts_likes.post_id) as likes,
+  count(answers.posts_id) as numAnswers,
+  users.name as userName,
+  users.lastname as userLastname,
+  users.image as userImage
+  FROM posts
+  LEFT JOIN posts_likes ON posts.id = posts_likes.post_id
+  LEFT JOIN answers ON posts.id = answers.posts_id
+  LEFT JOIN users on posts.postedBy = users.id
+  WHERE posts.postedBy like ? GROUP BY posts.id LIMIT ? OFFSET ?
   `;
   const [posts] = await pool.query(sql, [id, limit, initial]);
   
