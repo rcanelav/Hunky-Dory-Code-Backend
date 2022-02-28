@@ -47,6 +47,7 @@ const getUserLikes = async(req, res = response) => {
             const { type, ...rest } = publication;
             return rest;
         });
+        data.totalLikedPublications = totalLikedPublications;
 
         res.status( 200 ).json( data );
     } catch (error) {
