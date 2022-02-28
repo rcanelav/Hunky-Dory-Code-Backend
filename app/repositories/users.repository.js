@@ -103,7 +103,7 @@ async function findUserById(id) {
   const sql =`
     SELECT users.id, users.name, users.lastname, users.email, users.image, users.role, users.password, users.createdAt, users.verifiedAt, users.lastAuthUpdate, users.technologies, technologies.name as technologyName 
     FROM users 
-    inner join technologies on users.technologies = technologies.id 
+    left join technologies on users.technologies = technologies.id
     WHERE users.id = ?
   `;
   const [user] = await pool.query(sql, id);
@@ -195,18 +195,36 @@ async function removeUserById(id) {
 async function findUserAnswers(id, initial, limit) {
   const pool = await DBconnection();
   const sql = `
-    SELECT id, content, createdAt, posts_id FROM answers WHERE postedBy = ?
+  SELECT posts.*, answers.*, users.name, users.lastname, users.image, count(posts_likes.id)postLikes, count(answers_likes.id)answerLikes FROM (
+    SELECT id answerId, answers.content answerContent, answers.createdAt answerCreatedAt, posts_id FROM answers WHERE postedBy = ?
     ORDER BY createdAt DESC
-    LIMIT ? OFFSET ?
+  ) as answers
+  LEFT JOIN posts ON answers.posts_id = posts.id
+  LEFT JOIN users ON posts.postedBy = users.id
+  LEFT JOIN posts_likes ON posts.id = posts_likes.post_id
+  LEFT JOIN answers_likes ON answers.answerId = answers_likes.answer_id
+  GROUP BY answerId
+  LIMIT ? OFFSET ?
   `;
-  const [answers] = await pool.query(sql, [id, limit, initial]);
-  
+  let [answers] = await pool.query(sql, [id, limit, initial]);
+
+  const sqlNumAnswers = `
+  SELECT count(id) as total FROM answers WHERE posts_id = ?
+  `;
+
+  answers.map(async answer => {
+    const [total] = await pool.query(sqlNumAnswers, answer.posts_id);
+    answer.numAnswers = total[0].total;
+  });
+
   const sqlTotalUserAnswers = `
     SELECT COUNT(id) as totalAnswers FROM answers WHERE postedBy = ?`;
   const [totalAnswers] = await pool.query(sqlTotalUserAnswers, id);  
   
-  return {answers,
-          totalAnswers: totalAnswers[0].totalAnswers};
+  return {
+    answers,
+    totalAnswers: totalAnswers[0].totalAnswers,
+  };
 }
 
 async function findUserPosts(id, initial, limit) {
