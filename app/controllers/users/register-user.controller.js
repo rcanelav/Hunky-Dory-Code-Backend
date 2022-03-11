@@ -15,7 +15,7 @@ async function registerUser( req = request, res = response ) {
         
         const passwordHash = await bcryptjs.hash( password, 12 );
         const verificationCode = randomstring.generate(64);
-        const image = 'https://res.cloudinary.com/rayci/image/upload/v1643017363/david-bowie-head-decals_sazzzh.jpg';
+        const image = 'https://res.cloudinary.com/rayci/image/upload/v1646251811/xt5sm7uuzywetb30umac.jpg';
         const userDB = { name, lastname, email, passwordHash, verificationCode, role, image };
         const userId = await createUser( userDB );
         await sendRegisterEmail(name, email, verificationCode);
