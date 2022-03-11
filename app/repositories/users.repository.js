@@ -101,7 +101,7 @@ async function getUserByVerificationCode(code) {
 async function findUserById(id) {
   const pool = await DBconnection();
   const sql =`
-    SELECT users.id, users.name, users.lastname, users.email, users.image, users.role, users.password, users.createdAt, users.verifiedAt, users.lastAuthUpdate, users.technologies, technologies.name as technologyName 
+    SELECT users.id, users.name, users.lastname, users.email, users.image, users.role, users.password, users.createdAt, users.verifiedAt, users.lastAuthUpdate, users.technologies, users.linkedin, technologies.name as technologyName
     FROM users 
     left join technologies on users.technologies = technologies.id
     WHERE users.id = ?
