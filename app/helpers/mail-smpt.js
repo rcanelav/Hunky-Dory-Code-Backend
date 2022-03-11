@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendRegisterEmail( name, email, code ) {
-  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:'+PORT}/api/v1/users/activation?code=${ code }`;
+  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:3005'}/activation/${ code }`;
   const mailData = {
     from: SMTP_USER,
     to: email,
@@ -33,7 +33,7 @@ async function sendRegisterEmail( name, email, code ) {
 }
 
 async function sendUpdateConfirmationEmail( name, email, code ) {
-  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:'+PORT}/api/v1/users/confirmation?code=${ code }`;
+  const activationLink = `${ PORT !== '3000' ? DEPLOY_URL : 'http://localhost:3005'}/confirmation/${ code }`;
   const mailData = {
     from: SMTP_USER,
     to: email,
@@ -78,5 +78,4 @@ module.exports = {
     sendSuccessfulActivationEmail,
     sendUpdateConfirmationEmail,
     sendSuccessfulUpdateEmail,
-
 };
