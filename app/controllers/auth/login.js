@@ -64,8 +64,14 @@ const firebaseAuth = async (req, res) => {
       const userId = await createUserByFirebaseAuth(userDB);
       user = await findUserById(userId);
       await sendRegisterEmail(name, email, verificationCode);
-    }
 
+      return res.status(201).json({
+        msg: "User created, please verify your email.",
+      });
+    }
+    if( !user.verifiedAt ) {
+      throwJsonError(403, "User not verified");
+    }
     const token = await generateJWT(user);
     setLastAuthUpdate(user.id);
     res.status(201).json({
