@@ -11,7 +11,7 @@ const { createUser } = require('../../repositories/users.repository');
 async function registerUser( req = request, res = response ) {
     try {
         const { body } = req;
-        const { name, lastname, email, password, role } = body;
+        const { name, lastname = '', email, password, role } = body;
         
         const passwordHash = await bcryptjs.hash( password, 12 );
         const verificationCode = randomstring.generate(64);
