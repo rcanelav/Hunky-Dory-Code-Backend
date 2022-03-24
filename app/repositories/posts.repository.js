@@ -115,8 +115,8 @@ async function findPostsBySearchType(type, q, offset, limit, order, direction ){
   try {
     const pool = await DBconnection();
     const sql = `SELECT posts.*,
-    count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers,
+    count(distinct posts_likes.id) as likes,
+    count(distinct answers.id) as numAnswers,
     users.name as userName,
     users.lastname as userLastname,
     users.image as userImage
@@ -143,8 +143,8 @@ async function findPostByTechnology( value, technology, offset, limit, order, di
   const sql = `
     SELECT
     posts.*,
-    count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers,
+    count(distinct posts_likes.id) as likes,
+    count(distinct answers.id) as numAnswers,
     users.name as userName,
     users.lastname as userLastname,
     users.image as userImage
@@ -174,8 +174,8 @@ async function findPostsByDate ( value, initial = 0, end = new Date(), offset, l
   const pool = await DBconnection();
   const sql = `
     SELECT posts.*,
-    count(posts_likes.post_id) as likes,
-    count(answers.posts_id) as numAnswers,
+    count(distinct posts_likes.id) as likes,
+    count(distinct answers.id) as numAnswers,
     users.name as userName,
     users.lastname as userLastname,
     users.image as userImage
@@ -202,8 +202,8 @@ async function findPostsByAnswersQuantity(value, numAnswers = 0, offset, limit, 
   const pool = await DBconnection();
   const sql = `
   SELECT posts.*,
-  count(answers.posts_id) as numAnswers,
-  count(posts_likes.post_id) as likes,
+  count(distinct answers.id) as numAnswers,
+  count(distinct posts_likes.id) as likes,
   users.name as userName,
   users.lastname as userLastname,
   users.image as userImage
