@@ -17,8 +17,8 @@ _It is a web platform where people can share their doubts and knowledge about te
 <br />
 
 <div align="center">
-  <a href="https://github.com/rcanelav/Hunky-Dory-Code-Backend/">
-    <img src="https://res.cloudinary.com/rayci/image/upload/v1646335388/logo_rmhaes.png" alt="HDC logo" width="235" height="130">
+  <a href="https://rcanelav.github.io/hunky-dory-code-frontend/">
+    <img src="https://res.cloudinary.com/rayci/image/upload/v1648672506/hunky_kcnm2c.png" alt="HDC logo" width="255" height="150">
   </a>
 
   <h3 align="center">¡Don't let the code knock you out!</h3>
@@ -28,11 +28,20 @@ _It is a web platform where people can share their doubts and knowledge about te
     <a href="https://github.com/rcanelav/Hunky-Dory-Code-Docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://rcanelav.github.io/Hunky-Dory-Code-Backend/">View Demo</a>
+    ·
+    <a href="https://rcanelav.github.io/hunky-dory-code-frontend/">HDC access</a>
     ·
     <a href="https://github.com/rcanelav/Hunky-Dory-Code-Backend/issues">Report a Bug</a>
     ·
     <a href="https://github.com/rcanelav/Hunky-Dory-Code-Backend/issues">Request a Feature</a>
+    ·
+    <br />
+    <br />
+    ·
+    <a href="https://www.canva.com/design/DAE8j0Sj8-w/8aSldd_rtR6_juoM6_wGjw/view?utm_content=DAE8j0Sj8-w&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink#8" target="_blank">View mobile wireframe</a>
+    ⚡
+    <a href="https://www.canva.com/design/DAE8kcPqWGg/37VHBw4-6ZIdTRghsDZUcg/view?utm_content=DAE8kcPqWGg&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink" target="_blank">View desktop wireframe</a>
+    ·
   </p>
 </div>
 <br />
@@ -138,7 +147,7 @@ https://github.com/rcanelav/Hunky-Dory-Code-Frontend
 ## Authors ✒️
 ---
 
-* **Ramón Canela** - *Design and implementation* - [rcanelav](https://github.com/rcanelav)
+* **Ramón Canela** - *Design and implementation* - [rcanelav](https://www.linkedin.com/in/rcanelav/)
 
 Access to [contributors](https://github.com/rcanelav/Hunky-Dory-Code-Backend/graphs/contributors) list who has participating in this project.
 <p align="right">(<a href="#top">back to top ⬆</a>)</p>
